@@ -1,0 +1,5 @@
+Shelvean Kapita
+Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz Equation
+Research code accompanying the manuscript
+August 2026
+Department of Mathematics, Texas A&M University

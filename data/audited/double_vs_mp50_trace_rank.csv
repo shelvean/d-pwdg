@@ -1,0 +1,4 @@
+p,double_nonpositive_trace_eigenvalues,double_positive_rank_tau0,double_best_rel_L2_tau0,mp50_negative_eigenvalues,mp50_rank_tau_1e_12,mp50_rank_tau_1e_16,mp50_rank_tau_1e_20,mp50_rank_positive,mp50_min_relative_eigenvalue
+29,7,28,0.0001699209557247,0,27,29,29,29,5.00617772670618e-13
+31,12,29,0.0001325691904837,0,27,31,31,31,1.0040887599934668e-14
+35,31,31,6.658818656026025e-05,0,27,33,35,35,2.5258167838735185e-18

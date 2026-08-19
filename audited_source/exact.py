@@ -116,16 +116,16 @@ class Hankel:
         return np.hypot(np.asarray(x) - self.x0[0], np.asarray(y) - self.x0[1])
 
     def __call__(self, x, y):
-        from scipy.special import hankel1
-        return hankel1(0, self.kappa * self._r(x, y))
+        from scipy.special import hankel2
+        return hankel2(0, self.kappa * self._r(x, y))
 
     def grad(self, x, y):
-        from scipy.special import hankel1
+        from scipy.special import hankel2
         x = np.asarray(x, dtype=float)
         y = np.asarray(y, dtype=float)
         r = self._r(x, y)
         # d/dz H_0 = -H_1, and grad r = (x - x0) / r
-        radial = -self.kappa * hankel1(1, self.kappa * r) / r
+        radial = -self.kappa * hankel2(1, self.kappa * r) / r
         return np.stack([radial * (x - self.x0[0]),
                          radial * (y - self.x0[1])], axis=-1)
 

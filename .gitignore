@@ -1,6 +1,7 @@
 # Experiment output
 results/
 results_dtn/
+generated/
 
 # Python
 __pycache__/

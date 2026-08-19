@@ -94,3 +94,30 @@ The structured `core/` tree is retained because it is substantially easier to re
 audit mathematically, but tiny changes in optimization stopping/assembly order can move
 roundoff-level results by several digits.  It should not be substituted for the audited
 source when the purpose is to regenerate the exact printed table values.
+
+## Exact Table 3 verification
+
+For the submitted Table 3 transmission values, use
+
+    python verify_table3_exact.py
+
+This invokes the audited analytic-Jacobian continuation in
+`audited_source/transmission_omega12_experiments.py`.  The readable `core/`
+transmission optimizer uses a finite-difference Jacobian and is not the source
+of the printed roundoff-level L2 errors.
+
+The exact manuscript configuration is:
+
+- initial complex-angle starts `STARTS_A` in the audited driver;
+- frequency continuation `1, 2, 4, 6, 8, 10, 12`;
+- `N=2`: optimization edge quadrature `nq=16`;
+- `N=4`: optimization edge quadrature `nq=14`;
+- analytic Jacobian from `all_analytic`;
+- SciPy `least_squares`, method `trf`, `x_scale='jac'`;
+- `ftol=xtol=gtol=1e-12`;
+- `max_nfev=120` per continuation stage;
+- final state reassembled with `nq=max(nq,24)`;
+- relative L2 error evaluated by `l2_error(s,20)`.
+
+On the tested environment this reproduces all four submitted rows exactly to
+the stored floating-point values; see `validation/table3_exact_verification.txt`.

@@ -67,6 +67,7 @@ generated/                   created at run time by audited_source (git-ignored)
 
 reproduce.py                 one-command launcher for the core/ experiments
 reproduce_manuscript.py      launcher that prefers the audited drivers
+verify_table3_exact.py       asserts the four submitted Table 3 rows
 ```
 
 Two source trees are present.  `core/` + `experiments/` is the cleaned,

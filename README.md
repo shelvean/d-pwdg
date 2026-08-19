@@ -4,9 +4,15 @@
 Department of Mathematics, Texas A&M University  
 **August 2026**
 
-This archive contains the cleaned research implementation accompanying
+This repository contains the cleaned research implementation accompanying
 
-> **Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz Equation**.
+> **Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz Equation**
+
+together with the manuscript itself under [`paper/`](paper/) —
+[LaTeX source](paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.tex),
+[compiled PDF](paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf), and the
+figures it includes.  [`REPRODUCE.md`](REPRODUCE.md) maps every numbered table
+and figure of the PDF onto the script that produces it.
 
 The code is written as a transparent numerical-analysis implementation rather than a general finite-element package.  The aim is that the main mathematical objects in the paper can be found directly in the source: local Trefftz functions, PWDG fluxes, the weighted skeleton residual, graph-Riesz normalization, local Cauchy-trace compression, complex directions, variable projection, and the MOVE/ENRICH/REFINE adaptive loop.
 
@@ -42,7 +48,22 @@ experiments/
 data/
     reference data from earlier runs
     audited/                 audited DtN and finite-direction tables/figures
+
+paper/
+    Kapita_Direction_Adaptive_PWDG_Helmholtz.tex   manuscript source
+    Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf   compiled manuscript
+    sn-jnl.cls, sn-mathphys-num.bst                Springer Nature style files
+    figures/                 figures included by the manuscript
+
+results/                     created at run time by the drivers (git-ignored)
 ```
+
+Four documents sit at the top level.  `README.md` (this file) explains how to
+install and run.  [`METHOD_MAP.md`](METHOD_MAP.md) locates the mathematics of
+the paper in the source.  [`REPRODUCE.md`](REPRODUCE.md) maps the numbered
+tables and figures onto the drivers that produce them, and states which ones
+this archive does not regenerate.  [`VALIDATION.md`](VALIDATION.md) records the
+checks made when the source was cleaned.
 
 ## Installation
 
@@ -57,6 +78,12 @@ python -m pip install -r requirements.txt
 Run commands from the top level of the archive.
 
 ## Main experiments
+
+Each driver below is described here in terms of what it computes.  For the
+output-side view — which script writes which file, and which table or figure of
+the manuscript that file becomes — see [`REPRODUCE.md`](REPRODUCE.md).  All
+drivers write into `results/`, which is not tracked by git; the committed
+reference outputs are under `data/`.
 
 ### Transmission: propagating and evanescent directions
 
@@ -130,3 +157,29 @@ The audited CSV/figure outputs used in the manuscript are supplied under `data/a
 ## Code style
 
 Every principal source file identifies **Shelvean Kapita** and **August 2026** near the top.  Comments are concentrated around the numerical method rather than narrating ordinary Python syntax.  Vectorized `einsum`, sparse matrix assembly, and SciPy linear algebra are retained where they materially affect runtime.
+
+## Citation
+
+If you use this code or refer to these experiments, please cite the
+accompanying manuscript:
+
+> Shelvean Kapita, *Direction-Adaptive Plane-Wave Discontinuous Galerkin
+> Methods for the Helmholtz Equation*, Department of Mathematics, Texas A&M
+> University, August 2026.
+
+`CITATION.txt` carries the same reference in plain text, and the manuscript
+itself is under [`paper/`](paper/).
+
+## License
+
+The code, data and manuscript in this repository are released under
+[CC0 1.0 Universal](LICENSE): the author waives copyright and related rights
+worldwide, so no permission is needed to use, modify or redistribute them.
+Attribution is not legally required; a citation of the manuscript is the
+customary scholarly courtesy.
+
+Two files are **not** the author's to license and are not covered by the CC0
+waiver: `paper/sn-jnl.cls` and `paper/sn-mathphys-num.bst` are the Springer
+Nature journal class and bibliography style, redistributed here only so the
+manuscript compiles as submitted.  They remain subject to Springer Nature's own
+terms.

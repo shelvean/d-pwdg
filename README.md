@@ -49,6 +49,13 @@ data/
     reference data from earlier runs
     audited/                 audited DtN and finite-direction tables/figures
 
+audited_source/
+    the original pre-refactor source that produced the manuscript numbers
+    (import closure of the three manuscript drivers only)
+
+validation/
+    verification record for the audited transmission driver
+
 paper/
     Kapita_Direction_Adaptive_PWDG_Helmholtz.tex   manuscript source
     Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf   compiled manuscript
@@ -56,14 +63,26 @@ paper/
     figures/                 figures included by the manuscript
 
 results/                     created at run time by the drivers (git-ignored)
+generated/                   created at run time by audited_source (git-ignored)
+
+reproduce.py                 one-command launcher for the core/ experiments
+reproduce_manuscript.py      launcher that prefers the audited drivers
 ```
 
-Four documents sit at the top level.  `README.md` (this file) explains how to
+Two source trees are present.  `core/` + `experiments/` is the cleaned,
+readable implementation.  `audited_source/` is the original source that
+produced the printed manuscript values.  Where a table value is at roundoff
+level the two can differ in the last digits, so **prefer `audited_source/` when
+the purpose is to regenerate a printed number** — `REPRODUCE.md` shows a
+measured instance and records what each tree reproduces.
+
+Five documents sit at the top level.  `README.md` (this file) explains how to
 install and run.  [`METHOD_MAP.md`](METHOD_MAP.md) locates the mathematics of
 the paper in the source.  [`REPRODUCE.md`](REPRODUCE.md) maps the numbered
 tables and figures onto the drivers that produce them, and states which ones
 this archive does not regenerate.  [`VALIDATION.md`](VALIDATION.md) records the
-checks made when the source was cleaned.
+checks made when the source was cleaned.  [`PAPER_REPRODUCTION.md`](PAPER_REPRODUCTION.md)
+is the referee-facing guide to the one-command launchers.
 
 ## Installation
 

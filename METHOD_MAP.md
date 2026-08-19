@@ -60,23 +60,15 @@ The transmission-specific automatic searches are in the lower half of `core/dire
 
 ## Part B and variable projection
 
-`core/variable_projection.py` implements the unconstrained Trefftz least-squares formulation.  `build_trace_least_squares` constructs the matrix `D(Z)` and data vector `b`.  `eliminate_coefficients` solves the linear coefficient problem.  The nonlinear optimizer therefore receives only the direction variables.
-
-The coefficient elimination uses rank-revealing QR when the least-squares matrix has full column rank and a truncated SVD fallback otherwise.
-
-`experiments/experiment_variable_projection_hankel.py` applies this construction to the one-ray outgoing Hankel problem.
+`audited_source/direct_hankel_multidir_joint.py` implements the unconstrained Trefftz least-squares formulation and applies it to the one-ray outgoing Hankel problem.  The linear coefficients are eliminated so that the nonlinear optimizer receives only the direction variables.
 
 ## Transmission experiment
 
-`core/exact_fields.py` contains the exact two-material transmission field used only for boundary data and error measurement.  `experiments/experiment_transmission.py` runs frequency continuation in the three complex-angle variables.  The recovered upper-material state is compared after the solve with the Snell angle in the propagating case and with the analytic hyperbolic decay parameter in the evanescent case.
+`audited_source/exact.py` contains the exact two-material transmission field used only for boundary data and error measurement.  `audited_source/transmission_omega12_experiments.py` runs frequency continuation in the three complex-angle variables, with the analytic direction Jacobian of `audited_source/wirtinger_pwdg_tests.py`.  The recovered upper-material state is compared after the solve with the Snell angle in the propagating case and with the analytic hyperbolic decay parameter in the evanescent case.  `verify_table3_exact.py` asserts the four submitted rows.
 
-## Crossing-wave experiment
+## Analytic direction derivatives
 
-`experiments/experiment_crossing_waves.py` compares one, two, and three active directions for the exact field containing two crossing plane waves.  `experiments/experiment_nonlinear_history.py` records the nonlinear convergence history used for the convergence plot.
-
-## Fixed-budget high-frequency experiment
-
-`experiments/experiment_high_frequency_hankel.py` keeps five local rays and the eight-triangle mesh fixed while increasing the wavenumber.  The adapted fan and uniformly distributed five-ray space therefore have the same nominal number of coefficients.
+`audited_source/wirtinger_pwdg_tests.py` assembles the exact real-parameter derivative of the PWDG matrix and right-hand side (`assemble_directional_derivative`), the coefficient sensitivity (`solution_sensitivity`), and the residual Jacobian column (`residual_vector_and_jac_column`).  `all_analytic` assembles the full Jacobian.  This is the "analytic residual derivatives" of Section 7.1, and it is what allows the transmission recovery to reach roundoff.
 
 ## Hybrid adaptivity
 

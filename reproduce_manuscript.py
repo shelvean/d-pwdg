@@ -12,11 +12,13 @@ def run(cmd,cwd):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('experiment',choices=[
-        'transmission-and-conditioning','threewave-large-mesh','finite-directions',
-        'dtn-directions','dtn-tau-audit','hybrid','variable-projection'])
+        'transmission-and-conditioning','table3-verify','threewave-large-mesh',
+        'finite-directions','dtn-directions','dtn-tau-audit','hybrid','variable-projection'])
     a=ap.parse_args()
     if a.experiment=='transmission-and-conditioning':
         run([sys.executable,'transmission_omega12_experiments.py'],AUD)
+    elif a.experiment=='table3-verify':
+        run([sys.executable,'verify_table3_exact.py'],ROOT)
     elif a.experiment=='threewave-large-mesh':
         run([sys.executable,'test_threewave_large_mesh.py'],AUD)
     elif a.experiment=='finite-directions':
@@ -30,5 +32,5 @@ def main():
     elif a.experiment=='hybrid':
         run([sys.executable,'-m','experiments.experiment_adaptive_threshold'],ROOT)
     elif a.experiment=='variable-projection':
-        run([sys.executable,'-m','experiments.experiment_variable_projection_hankel'],ROOT)
+        run([sys.executable,'direct_hankel_multidir_joint.py'],AUD)
 if __name__=='__main__': main()

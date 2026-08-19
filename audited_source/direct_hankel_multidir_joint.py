@@ -92,7 +92,7 @@ def residual_and_Kz(ex,z,c,r,nq=NQ):
 def solve_r(r,max_nfev=1200):
     ex=Hankel(KAPPA,source=SOURCE)
     v,t=square_mesh(N_MESH);cent=v[t].mean(axis=1)
-    d=cent-np.asarray(SOURCE);rad=np.arctan2(d[:,1],d[:,0])%(2*np.pi)
+    d=np.asarray(SOURCE)-cent;rad=np.arctan2(d[:,1],d[:,0])%(2*np.pi)
     offs=offsets_for_r(r)
     z0=np.concatenate([rad[e]+offs for e in range(len(t))]).astype(complex)
     s,D,b,qp=build_state(ex,z0,r,NQ); ndof=D.shape[1]; m=len(z0)

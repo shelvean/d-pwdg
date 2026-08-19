@@ -71,7 +71,7 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
-from scipy.special import h1vp, hankel1, jv, jvp
+from scipy.special import h2vp, hankel2, jv, jvp
 
 # Numerical parameters used in the manuscript experiment.
 KAPPA = 12.0
@@ -108,7 +108,7 @@ def exact_val(x,y):
     # r=0 limiting value 0
     R1=np.hypot(x-x1[0],y-x1[1])
     R2=np.hypot(x-x2[0],y-x2[1])
-    return term + 4*hankel1(0,KAPPA*R1)+hankel1(0,KAPPA*R2)
+    return term + 4*hankel2(0,KAPPA*R1)+hankel2(0,KAPPA*R2)
 
 def exact_grad(x,y):
     # analytic Bessel polar gradient + Hankel gradients
@@ -130,7 +130,7 @@ def exact_grad(x,y):
         dx=x-src[0]
         dy=y-src[1]
         R=np.hypot(dx,dy)
-        fac=amp*KAPPA*h1vp(0,KAPPA*R,1)/R
+        fac=amp*KAPPA*h2vp(0,KAPPA*R,1)/R
         gx += fac*dx
         gy += fac*dy
     return np.stack([gx,gy],axis=-1)
@@ -418,7 +418,7 @@ def hybrid_run():
         print('RESUME HYBRID at',startcyc,'nelem',len(t),'ndof',sum(map(len,dirs)),flush=True)
     else:
         v,t=initial_l_mesh()
-        base=2*np.pi*np.arange(P0)/P0
+        base=2*np.pi*np.arange(P0)/P0 + np.pi
         dirs=[base.copy() for _ in range(len(t))]
         norm=graph_norm_exact_boundary(v,t)
         hist=[]
@@ -520,7 +520,7 @@ def hybrid_run():
 
 def pure_h_run(norm):
     v,t=initial_l_mesh()
-    base=2*np.pi*np.arange(P0)/P0
+    base=2*np.pi*np.arange(P0)/P0 + np.pi
     dirs=[base.copy() for _ in range(len(t))]
     hist=[]
     for cyc in range(MAX_CYCLES+5):

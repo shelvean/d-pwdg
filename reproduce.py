@@ -3,75 +3,113 @@
 Author: Shelvean Kapita
 Date: August 2026
 
+This repository holds only what the submitted manuscript needs.  Each entry
+below produces a numbered table or figure; nothing here is a development or
+diagnostic script.
+
 Examples
 --------
 python reproduce.py --list
 python reproduce.py --quick
-python reproduce.py --experiment transmission
-python reproduce.py --experiment finite-directions
+python reproduce.py --experiment table3
 python reproduce.py --paper
 
-`--paper` runs all fully rerunnable manuscript computations.  The hybrid adaptive and
-DtN cutoff audits can be expensive.  High-precision trace-spectrum data reported in the
-paper are supplied under data/audited; the original 50-digit generator was not part of
-the surviving cleaned source tree and is therefore not falsely advertised as rerunnable.
+Tables 1, 2, 3 and Fig. 1 come from `audited_source/`, the implementation that
+produced the printed values, and use the analytic direction Jacobian described
+in Section 7.1 of the paper.  The remaining entries come from `core/`, which is
+the only implementation of the DtN and finite-direction experiments.
+
+`--paper` runs every rerunnable manuscript computation.  The hybrid benchmark
+and the DtN cutoff audit are expensive.  The high-precision trace-spectrum data
+reported in the paper are supplied under `data/audited/`; the original 50-digit
+generator was not part of the surviving source tree and is therefore not
+advertised here as rerunnable.
 """
 from __future__ import annotations
 import argparse, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+AUDITED = ROOT / "audited_source"
 
+# name -> (command, working directory, manuscript item)
 EXPERIMENTS = {
-    "crossing": [sys.executable, "-m", "experiments.experiment_crossing_waves"],
-    "nonlinear-history": [sys.executable, "-m", "experiments.experiment_nonlinear_history"],
-    "transmission": [sys.executable, "-m", "experiments.experiment_transmission"],
-    "dtn-centered": [sys.executable, "-m", "experiments.experiment_dtn_direction_recovery", "--case", "centered", "--k", "8", "--nr", "1", "--ntheta", "8", "--p", "3"],
-    "dtn-offcenter": [sys.executable, "-m", "experiments.experiment_dtn_direction_recovery", "--case", "offcenter", "--k", "8", "--nr", "1", "--ntheta", "8", "--p", "3"],
-    "variable-projection": [sys.executable, "-m", "experiments.experiment_variable_projection_hankel"],
-    "finite-capacity": [sys.executable, "-m", "experiments.experiment_finite_direction_capacity"],
-    "finite-enrich-1-10": [sys.executable, "-m", "experiments.experiment_finite_direction_enrichment"],
-    "finite-polish": [sys.executable, "-m", "experiments.polish_finite_direction_enrichment"],
-    "finite-enrich-11-20": [sys.executable, "-m", "experiments.experiment_finite_direction_enrichment_11_20"],
-    "hybrid": [sys.executable, "-m", "experiments.experiment_adaptive_threshold"],
-    "dtn-tau-audit": [sys.executable, "-m", "experiments.precision_audit.experiment_dtn_tau_sweep"],
+    "table1": ([sys.executable, "uniform_conditioning_graph_riesz.py"], AUDITED,
+               "Table 1 - uniform vs graph-Riesz conditioning"),
+    "table2": ([sys.executable, "test_threewave_large_mesh.py"], AUDITED,
+               "Table 2 - three hidden plane waves"),
+    "table3": ([sys.executable, "verify_table3_exact.py"], ROOT,
+               "Table 3 - transmission recovery (asserts the submitted rows)"),
+    "fig1": ([sys.executable, "plot_transmission_visualization.py"], AUDITED,
+             "Fig. 1 - transmission fields at omega=12"),
+    "dtn-centered": ([sys.executable, "-m", "experiments.experiment_dtn_direction_recovery",
+                      "--case", "centered", "--k", "8", "--nr", "1", "--ntheta", "8", "--p", "3"], ROOT,
+                     "Table 4 / Fig. 4 - centered Hankel source"),
+    "dtn-offcenter": ([sys.executable, "-m", "experiments.experiment_dtn_direction_recovery",
+                       "--case", "offcenter", "--k", "8", "--nr", "1", "--ntheta", "8", "--p", "3"], ROOT,
+                      "Table 4 / Fig. 4 - off-center Hankel source"),
+    "dtn-tau-audit": ([sys.executable, "-m", "experiments.precision_audit.experiment_dtn_tau_sweep"], ROOT,
+                      "Table 6 - trace-cutoff sweep"),
+    "finite-capacity": ([sys.executable, "-m", "experiments.experiment_finite_direction_capacity"], ROOT,
+                        "Table 7 - finite-direction capacity"),
+    "finite-enrich-1-10": ([sys.executable, "-m", "experiments.experiment_finite_direction_enrichment"], ROOT,
+                           "Fig. 7 - ENRICH-MOVE continuation, M=1..10"),
+    "finite-polish": ([sys.executable, "-m", "experiments.polish_finite_direction_enrichment"], ROOT,
+                      "Fig. 7 - continuation polish"),
+    "finite-enrich-11-20": ([sys.executable, "-m", "experiments.experiment_finite_direction_enrichment_11_20"], ROOT,
+                            "Fig. 7 - ENRICH-MOVE continuation, M=11..20"),
+    "hybrid": ([sys.executable, "-m", "experiments.experiment_adaptive_threshold"], ROOT,
+               "Table 8 / Fig. 8 - threshold-driven hybrid benchmark"),
+    "variable-projection": ([sys.executable, "direct_hankel_multidir_joint.py"], AUDITED,
+                            "Section 7.9 - variable-projection check"),
 }
 
 GROUPS = {
-    "quick": ["crossing", "transmission"],
+    "quick": ["table1", "table3", "fig1"],
+    "tables-1-3": ["table1", "table2", "table3"],
     "finite-directions": ["finite-capacity", "finite-enrich-1-10", "finite-polish", "finite-enrich-11-20"],
     "dtn-directions": ["dtn-centered", "dtn-offcenter"],
-    "paper": ["crossing", "nonlinear-history", "transmission", "dtn-centered", "dtn-offcenter", "variable-projection", "finite-capacity", "finite-enrich-1-10", "finite-polish", "finite-enrich-11-20", "dtn-tau-audit", "hybrid"],
+    "paper": ["table1", "table2", "table3", "fig1", "dtn-centered", "dtn-offcenter",
+              "variable-projection", "finite-capacity", "finite-enrich-1-10", "finite-polish",
+              "finite-enrich-11-20", "dtn-tau-audit", "hybrid"],
 }
 
+
 def run_one(name: str) -> None:
-    cmd = EXPERIMENTS[name]
-    print(f"\n=== {name} ===", flush=True)
-    print(" ".join(cmd), flush=True)
+    cmd, cwd, item = EXPERIMENTS[name]
+    print(f"\n=== {name}  ({item}) ===", flush=True)
+    print(" ".join(str(c) for c in cmd), flush=True)
     tic = time.time()
-    subprocess.run(cmd, cwd=ROOT, check=True)
+    subprocess.run(cmd, cwd=cwd, check=True)
     print(f"=== completed {name} in {time.time()-tic:.1f} s ===", flush=True)
+
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--paper", action="store_true")
-    ap.add_argument("--experiment", choices=sorted(set(EXPERIMENTS)|set(GROUPS)))
+    ap.add_argument("--experiment", choices=sorted(set(EXPERIMENTS) | set(GROUPS)))
     args = ap.parse_args()
     if args.list:
         print("Experiments:")
-        for x in EXPERIMENTS: print("  ", x)
+        for name, (_, _, item) in EXPERIMENTS.items():
+            print(f"   {name:22s} {item}")
         print("Groups:")
-        for x, vals in GROUPS.items(): print(f"  {x}: {', '.join(vals)}")
+        for name, vals in GROUPS.items():
+            print(f"   {name}: {', '.join(vals)}")
         return
-    if args.quick: names=GROUPS['quick']
-    elif args.paper: names=GROUPS['paper']
+    if args.quick:
+        names = GROUPS["quick"]
+    elif args.paper:
+        names = GROUPS["paper"]
     elif args.experiment:
-        names=GROUPS.get(args.experiment,[args.experiment])
+        names = GROUPS.get(args.experiment, [args.experiment])
     else:
         ap.error("choose --list, --quick, --paper, or --experiment NAME")
-    for name in names: run_one(name)
+    for name in names:
+        run_one(name)
+
 
 if __name__ == "__main__":
     main()

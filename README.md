@@ -25,25 +25,18 @@ core/
     pwdg.py                  basic triangular-mesh utilities
     quadrature.py            edge and triangle quadrature
     direction_adaptive.py    PWDG state solve and direction adaptation
-    variable_projection.py   Part B skeleton least squares
-    exact_fields.py          exact/manufactured fields
     dtn_pwdg.py              exact circular DtN-PWDG solver
     compressed_dtn.py        local trace compression + graph-Riesz solve
 
 experiments/
-    experiment_transmission.py
     experiment_dtn_direction_recovery.py
-    experiment_dtn_boundary_direction_oracle.py
     experiment_finite_direction_capacity.py
     experiment_finite_direction_enrichment.py
     polish_finite_direction_enrichment.py
     experiment_finite_direction_enrichment_11_20.py
     experiment_adaptive_threshold.py
-    experiment_variable_projection_hankel.py
     precision_audit/
         experiment_dtn_tau_sweep.py
-
-    # Additional development/reproducibility drivers are also retained.
 
 data/
     reference data from earlier runs
@@ -101,24 +94,31 @@ Run commands from the top level of the archive.
 
 Each driver below is described here in terms of what it computes.  For the
 output-side view — which script writes which file, and which table or figure of
-the manuscript that file becomes — see [`REPRODUCE.md`](REPRODUCE.md).  All
-drivers write into `results/`, which is not tracked by git; the committed
-reference outputs are under `data/`.
+the manuscript that file becomes — see [`REPRODUCE.md`](REPRODUCE.md).  The
+single entry point is
+
+```bash
+python reproduce.py --list
+```
+
+`core/` drivers write into `results/` and audited drivers into `generated/`;
+neither is tracked by git, and the committed reference outputs are under
+`data/`.
 
 ### Transmission: propagating and evanescent directions
 
 ```bash
-python -m experiments.experiment_transmission
+python reproduce.py --experiment table3      # asserts the four submitted rows
+python reproduce.py --experiment fig1        # the omega=12 field plots
 ```
 
-The same complex-angle parameterization is used on both sides of the interface.  Frequency continuation recovers a real Snell direction in the propagating case and a complex/evanescent direction in the total-internal-reflection case.
+The same complex-angle parameterization is used on both sides of the interface.  Frequency continuation recovers a real Snell direction in the propagating case and a complex/evanescent direction in the total-internal-reflection case.  This experiment is run from `audited_source/`, with the analytic direction Jacobian; see the note on the two implementations in [`REPRODUCE.md`](REPRODUCE.md).
 
 ### Exact circular DtN direction recovery
 
 ```bash
 python -m experiments.experiment_dtn_direction_recovery --case centered --k 8 --nr 1 --ntheta 8 --p 3
 python -m experiments.experiment_dtn_direction_recovery --case offcenter --k 8 --nr 1 --ntheta 8 --p 3
-python -m experiments.experiment_dtn_direction_recovery --case scattering --k 8 --nr 1 --ntheta 8 --p 3
 ```
 
 `core/dtn_pwdg.py` represents both circles exactly with polar-sector elements.  The circular DtN map is diagonal in Fourier modes and is assembled as a global outer-boundary block.

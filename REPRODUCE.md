@@ -40,7 +40,7 @@ part of the experiment definition, not free parameters (see the
 | Table 1 — uniform vs. graph–Riesz conditioning | `audited_source/uniform_conditioning_graph_riesz.py` (also emitted by the transmission driver) | terminal table; `generated/uniform_conditioning_graph_riesz_omega12.csv` | — |
 | Table 2 — three hidden plane waves | `python reproduce_manuscript.py threewave-large-mesh` | `generated/threewave_large_mesh_results.csv` | — |
 | Fig. 1 — transmission fields, ω=12 | `cd audited_source && python plot_transmission_visualization.py` | `generated/transmission_solution_{69,29}deg_2d.png` | `paper/figures/transmission_solution_{69,29}deg_2d.png` |
-| Table 3 — Part A transmission recovery | `python reproduce_manuscript.py transmission-and-conditioning` (authoritative) or `experiments/experiment_transmission.py` (see the caveat below) | `generated/transmission_omega12_analytic_final.csv` / `results/transmission_recovery.csv` | `validation/transmission_omega12_analytic_final.csv` |
+| Table 3 — Part A transmission recovery | `python verify_table3_exact.py` — runs the audited analytic-Jacobian continuation and asserts all four submitted rows | `generated/transmission_omega12_analytic_final.csv` | `validation/transmission_omega12_analytic_final.csv`, `validation/table3_exact_verification.txt` |
 | Fig. 2 — the 8- and 32-triangle meshes | *no plotting driver* | — | `paper/figures/transmission_meshes_8_32.png` |
 | Fig. 3 — DtN geometry and scattering reference field | *no plotting driver* (mesh class is `core/dtn_pwdg.py: PolarAnnulusMesh`) | — | `paper/figures/dtn_mesh_and_plane_wave_scattering_M20_jet.png` |
 | Table 4 — DtN Hankel tests on the exact annulus | `experiments/experiment_dtn_direction_recovery.py --case centered` and `--case offcenter` | `<outdir>/dtn_<case>_continuation.csv`, `<outdir>/dtn_<case>_outer_directions.csv` | — |
@@ -139,10 +139,19 @@ actually produced the numbers printed in the manuscript, together with
 `reproduce_manuscript.py` as its entry point.
 
 **For regenerating a printed table value, prefer `audited_source/`.** The two
-trees agree on the mathematics but not always on the last digits: stopping
-rules and assembly order differ slightly, which is invisible except where the
-reported quantity is itself at roundoff level. The transmission experiment is
-the clearest case — see the caveat in the verification table below.
+trees agree on the mathematics but not always on the last digits, which is
+invisible except where the reported quantity is itself at roundoff level. The
+difference is the direction Jacobian: `audited_source/` differentiates the
+skeleton residual analytically (the Wirtinger derivatives of §5.7), while
+`core/` uses finite differences. On a zero-residual problem such as the
+transmission recovery, that sets the floor on how exactly the directions can be
+identified, and therefore on the reported `L²` error.
+
+Table 3 is the case where this shows. `verify_table3_exact.py` runs the audited
+continuation and asserts all four submitted rows; `PAPER_REPRODUCTION.md`
+records the exact configuration behind them (starts, continuation schedule,
+`nq=16`/`14`, analytic Jacobian, `ftol=xtol=gtol=1e-12`, `max_nfev=120`, final
+reassembly at `nq=24`, error by `l2_error(s,20)`).
 
 `audited_source/` holds only the import closure of the manuscript drivers
 (14 files), not the full legacy tree.
@@ -163,7 +172,8 @@ SciPy 1.17.0), so agreement is across versions rather than within one.
 | DtN trace-cutoff sweep (Table 6) | `python reproduce.py --experiment dtn-tau-audit` | All 39 audited rows matched on `(p, τ)`. For `τ ≥ 10⁻¹⁴` the retained rank, effective dimension and relative error are identical. For `τ ≤ 10⁻¹⁶` at high `p` they diverge, by up to 52% in relative error, because those cutoffs retain modes at the roundoff boundary where eigenvalue ordering is version-dependent. This is the paper's own thesis about `τ_rank` rather than a contradiction of it. `VALIDATION.md`'s spot check (`p=27`, `τ=10⁻¹²` → 184 effective dofs, rank 23, `7.895e-4`) reproduces exactly. |
 | Fig. 1 plot | `cd audited_source && python plot_transmission_visualization.py` | Renders both panels; visually identical to the committed `paper/figures/transmission_solution_69deg_2d.png` (regenerated at higher resolution, so not byte-identical). |
 | Variable projection | `python reproduce.py --experiment variable-projection` | Centroid-radial start gives `J = 0.456044`, `E_L2 = 0.354619`, against the manuscript's `4.5604e-1` and `3.5462e-1`. Blind Sobol converges to the poorer basin as reported. |
-| **Cleaned-tree transmission** | `python reproduce.py --experiment transmission` | **Does not reproduce the manuscript's figures.** Relative `L²` comes out `6.58e-12` (69°) and `2.92e-11` (29°), against the paper's `1.41e-15` and `2.00e-15`. Recovered angles and both condition numbers agree to ~6 digits; only the roundoff-level error column moves. This is the concrete instance of the caveat above — use `reproduce_manuscript.py` for this table. |
+| **Table 3 checker** | `python verify_table3_exact.py` | **PASS on all four submitted rows**, to the script's own `rtol = 5e-13`: `1.4052063417077849e-15` / `1.9963819848785935e-15` (N=2) and `1.1265076008304821e-15` / `4.2577038056364852e-15` (N=4), with `ndof`, `cum_nfev`, `κ₂(A)` and `κ_GR` all matching. Output identical to the shipped `validation/table3_exact_verification.txt`. |
+| Cleaned-tree transmission | `python reproduce.py --experiment transmission` | Returns `6.58e-12` (69°) and `2.92e-11` (29°) rather than the printed `1.41e-15` / `2.00e-15`. **This is by design, not a defect:** `core/`'s optimizer uses a finite-difference Jacobian and is the readable reference implementation, not the source of the printed roundoff-level errors. Measured cause — the recovered angles and both condition numbers agree to ~6 digits and the error measurement is quadrature-converged, but the direction parameters themselves stall at `|η| ≈ 2e-12`; running the audited analytic Jacobian from `core/`'s own generic starting angles gives `1.07e-15` versus `6.94e-12` for finite differences under otherwise identical settings. |
 
 Not rerun here: the hybrid adaptive benchmark (`--experiment hybrid`, the
 expensive one) and the finite-direction continuation chain.

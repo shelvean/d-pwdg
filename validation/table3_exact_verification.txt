@@ -1,0 +1,13 @@
+Table 3 exact-reproduction check
+source: /mnt/data/Kapita_Direction_Adaptive_PWDG_Reproducibility_Aug2026/generated/transmission_omega12_analytic_final.csv
+N=2, angle=69: L2=1.4052063417077849e-15, nfev=15, cond(A)=10.0568021498158, cond_GR=1.84098025684468 [PASS]
+N=2, angle=29: L2=1.9963819848785935e-15, nfev=21, cond(A)=1217646507.63597, cond_GR=2.25131795009883 [PASS]
+N=4, angle=69: L2=1.1265076008304821e-15, nfev=15, cond(A)=22.9458593281786, cond_GR=2.91911297532917 [PASS]
+N=4, angle=29: L2=4.2577038056364852e-15, nfev=20, cond(A)=42816.719563133, cond_GR=3.52011372571781 [PASS]
+
+PASS: all four submitted Table 3 rows are reproduced.
+Rounded manuscript L2 values:
+  N=2, 69 deg: 1.41e-15
+  N=2, 29 deg: 2.00e-15
+  N=4, 69 deg: 1.13e-15
+  N=4, 29 deg: 4.26e-15

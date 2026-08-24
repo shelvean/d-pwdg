@@ -45,6 +45,22 @@ python reproduce.py --quick      # Tables 1 and 3 and Fig. 1
 python reproduce.py --paper      # everything rerunnable
 ```
 
+A failing step does not abort a group run: the launcher records it,
+skips only the steps that consume its outputs (the ordered Fig. 7
+chain), runs everything else, and ends with a per-step summary and a
+nonzero exit code.  `--stop-on-fail` restores abort-at-first-failure.
+
+The hybrid benchmark accepts a prescribed tolerance on the command line:
+
+```bash
+python -m experiments.experiment_adaptive_threshold --target 0.02 --max-cycles 40 --max-dof 30000
+```
+
+The defaults reproduce the manuscript run (target 0.05).  Tighter targets need
+the cycle and dof caps raised; a run stopped by a cap keeps its checkpoint and
+resumes from it when rerun with larger caps (`--fresh` discards the
+checkpoint).
+
 The drivers are deterministic: initial states and continuation schedules are
 part of the experiment definition, not free parameters.
 
@@ -54,7 +70,7 @@ part of the experiment definition, not free parameters.
 | --- | --- | --- | --- |
 | Table 1 — uniform vs. graph–Riesz conditioning | `table1` | `audited_source/uniform_conditioning_graph_riesz.py` | terminal table |
 | Table 2 — three hidden plane waves | `table2` | `audited_source/test_threewave_large_mesh.py` | `generated/threewave_large_mesh_results.csv` |
-| Table 3 — Part A transmission recovery | `table3` | `verify_table3_exact.py`, which runs the audited continuation and **asserts** all four submitted rows | `generated/transmission_omega12_analytic_final.csv` |
+| Table 3 — Part A transmission recovery | `table3` | `verify_table3_exact.py`, which runs the audited continuation and **asserts** all four submitted rows at manuscript accuracy (machine-precision L2, analytic Snell/evanescent recovery, conditioning within its roundoff floor); `--bitwise` reruns the validation-machine digit record, which is hardware dependent | `generated/transmission_omega12_analytic_final.csv` |
 | Fig. 1 — transmission fields, ω=12 | `fig1` | `audited_source/plot_transmission_visualization.py` | `generated/transmission_solution_{69,29}deg_2d.png` |
 | Table 4 / Fig. 4 — DtN Hankel tests, learned wave vectors | `dtn-centered`, `dtn-offcenter` | `experiments/experiment_dtn_direction_recovery.py` | `results_dtn/dtn_<case>_*.csv`, `..._directions.png` |
 | Table 6 — trace-cutoff sweep | `dtn-tau-audit` | `experiments/precision_audit/experiment_dtn_tau_sweep.py` | `results/precision_audit/tau_sweep_audited.csv` |
@@ -105,7 +121,7 @@ SciPy 1.17.0), so agreement is across versions rather than within one.
 
 | Run | Result |
 | --- | --- |
-| Table 3 checker | **PASS on all four submitted rows** to its own `rtol = 5e-13`: `1.4052063417077849e-15` / `1.9963819848785935e-15` (N=2) and `1.1265076008304821e-15` / `4.2577038056364852e-15` (N=4), with `ndof`, `cum_nfev`, `κ₂(A)` and `κ_GR` all matching. Output identical to `validation/table3_exact_verification.txt`. |
+| Table 3 checker | **PASS on all four submitted rows** (in `--bitwise` mode on the validation machine) to `rtol = 5e-13`: `1.4052063417077849e-15` / `1.9963819848785935e-15` (N=2) and `1.1265076008304821e-15` / `4.2577038056364852e-15` (N=4), with `ndof`, `cum_nfev`, `κ₂(A)` and `κ_GR` all matching. Output identical to `validation/table3_exact_verification.txt`. |
 | Audited transmission driver | **Byte-identical** to `validation/transmission_omega12_analytic_final.csv` and to the continuation-stages record. |
 | Table 1 | Matches the manuscript to all printed digits for `p ≤ 23`, and `κ_GR` through `p = 27`. The two entries with `κ₂(A) ≥ 10¹⁴` differ in the second digit, which is what a condition number of that size means. At `p = 29` the smallest graph eigenvalue is negative (`-2.37e-14`, manuscript `-2.0e-14`) and `κ_GR` is correctly undefined. |
 | Table 2 | On 72 triangles the uniform errors, `N_fev`, `κ₂(A)` and `κ_GR` match to every printed digit. Directions recovered as `251.000000000000, 123.000000000000, 17.000000000000`. |

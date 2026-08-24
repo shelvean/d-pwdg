@@ -46,6 +46,16 @@ From the top level of the code archive,
 
     python -m experiments.experiment_adaptive_threshold
 
+The defaults are the manuscript values.  The prescribed tolerance and the
+two safety stops are also settable on the command line,
+
+    python -m experiments.experiment_adaptive_threshold \\
+        --target 0.02 --max-cycles 40 --max-dof 30000
+
+A tolerance tighter than 0.05 generally needs the cycle and dof caps raised.
+A run stopped by a cap keeps its checkpoint and resumes from it on the next
+invocation; ``--fresh`` discards the checkpoint and starts over.
+
 The calculation is intentionally expensive.  The CSV files supplied in the
 ``data`` directory are the reference results reported in the manuscript.
 """
@@ -61,6 +71,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "results" / "adaptive_threshold"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+import argparse
 import csv
 import math
 import os
@@ -83,8 +94,10 @@ MOVE_DEG = 15.0
 SEP_DEG = 7.0
 P0 = 5
 PMAX = 20  # nominal cap; the reported calculation reaches only p_K = 8.
-TARGET = 0.05
-MAX_CYCLES = 22
+TARGET = 0.05          # relative graph-error tolerance (manuscript value)
+MAX_CYCLES = 22        # hybrid cycle cap (manuscript value)
+MAX_DOF_HYBRID = 7000  # hybrid dof safety stop (manuscript value)
+MAX_DOF_PURE = 15000   # pure-h dof safety stop (manuscript value)
 NQ = 18
 DIRECTION_STAGE_END_CYCLE = 14
 
@@ -432,9 +445,15 @@ def hybrid_run():
         print('HYB',rec,flush=True)
         hist.append(rec)
         save(str(OUTPUT_DIR/'hybrid_threshold_partial.csv'),hist)
-        if rel<=TARGET or cyc==MAX_CYCLES:
+        if rel<=TARGET:
+            print(f'hybrid target reached: rel={rel:.4f} <= {TARGET}')
             if os.path.exists(ck):
                 os.remove(ck)
+            break
+        if cyc==MAX_CYCLES:
+            print(f'hybrid cycle cap {MAX_CYCLES} reached at rel={rel:.4f} '
+                  f'> {TARGET} - checkpoint kept; rerun with a larger '
+                  '--max-cycles to continue')
             break
         marked=dorfer(eta)
 
@@ -509,8 +528,9 @@ def hybrid_run():
         save(str(OUTPUT_DIR/'hybrid_threshold_partial.csv'),hist)
         with open(ck,'wb') as f:
             pickle.dump((v,t,dirs,hist,norm,cyc+1),f)
-        if s.ndof>7000:
-            print('hybrid dof safety stop')
+        if s.ndof>MAX_DOF_HYBRID:
+            print('hybrid dof safety stop at ndof', s.ndof,
+                  '- checkpoint kept; rerun with --max-dof to continue')
             break
     return hist,norm
 
@@ -523,7 +543,7 @@ def pure_h_run(norm):
     base=2*np.pi*np.arange(P0)/P0 + np.pi
     dirs=[base.copy() for _ in range(len(t))]
     hist=[]
-    for cyc in range(MAX_CYCLES+5):
+    for cyc in range(MAX_CYCLES+5+1):
         tic=time.time()
         s=solve(v,t,dirs)
         eta,J,ge=metrics(s)
@@ -532,11 +552,15 @@ def pure_h_run(norm):
         print('PURE',rec,flush=True)
         hist.append(rec)
         if rel<=TARGET:
+            print(f'pure-h target reached: rel={rel:.4f} <= {TARGET}')
+            break
+        if cyc==MAX_CYCLES+5:
+            print(f'pure-h cycle cap reached at rel={rel:.4f} > {TARGET}')
             break
         marked=dorfer(eta)
         v,t,dirs=bisect_conforming(v,t,marked,dirs)
-        if s.ndof>15000:
-            print('pure dof safety stop')
+        if s.ndof>MAX_DOF_PURE:
+            print('pure dof safety stop at ndof', s.ndof)
             break
     return hist
 
@@ -551,7 +575,38 @@ def save(name,hist):
         w.writeheader()
         w.writerows(hist)
 
+def _parse_args():
+    ap = argparse.ArgumentParser(
+        description="Two-stage hybrid adaptive PWDG benchmark. Defaults "
+                    "reproduce the manuscript run (target 0.05).")
+    ap.add_argument("--target", type=float, default=TARGET,
+                    help="relative graph-error tolerance (default %(default)s); "
+                         "smaller targets need --max-cycles and --max-dof raised")
+    ap.add_argument("--max-cycles", type=int, default=MAX_CYCLES,
+                    help="hybrid cycle cap (default %(default)s); a capped run "
+                         "keeps its checkpoint and resumes when rerun")
+    ap.add_argument("--max-dof", type=int, default=MAX_DOF_HYBRID,
+                    help="hybrid dof safety stop (default %(default)s)")
+    ap.add_argument("--max-dof-pure", type=int, default=MAX_DOF_PURE,
+                    help="pure-h dof safety stop (default %(default)s)")
+    ap.add_argument("--fresh", action="store_true",
+                    help="ignore and delete any existing checkpoint")
+    return ap.parse_args()
+
+
 if __name__=='__main__':
+    _a = _parse_args()
+    TARGET = _a.target
+    MAX_CYCLES = _a.max_cycles
+    MAX_DOF_HYBRID = _a.max_dof
+    MAX_DOF_PURE = _a.max_dof_pure
+    if _a.fresh:
+        _ck = OUTPUT_DIR/'hybrid_checkpoint.pkl'
+        if _ck.exists():
+            _ck.unlink()
+            print('checkpoint removed (--fresh)')
+    print('TARGET', TARGET, 'MAX_CYCLES', MAX_CYCLES,
+          'MAX_DOF', MAX_DOF_HYBRID, '/', MAX_DOF_PURE)
     print('initial triangles',len(initial_l_mesh()[1]))
     h,norm=hybrid_run()
     p=pure_h_run(norm)

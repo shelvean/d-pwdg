@@ -19,6 +19,11 @@ produced the printed values, and use the analytic direction Jacobian described
 in Section 7.1 of the paper.  The remaining entries come from `core/`, which is
 the only implementation of the DtN and finite-direction experiments.
 
+A failing step no longer aborts the run: the launcher records the
+failure, skips only steps that consume its outputs, continues with
+everything else, and prints a summary; the exit code is nonzero if
+anything failed.  Pass ``--stop-on-fail`` for the old behavior.
+
 `--paper` runs every rerunnable manuscript computation.  The hybrid benchmark
 and the DtN cutoff audit are expensive.  The high-precision trace-spectrum data
 reported in the paper are supplied under `data/audited/`; the original 50-digit
@@ -75,13 +80,55 @@ GROUPS = {
 }
 
 
-def run_one(name: str) -> None:
+# name -> names of earlier steps whose outputs it consumes (Fig. 7 chain)
+DEPENDS = {
+    "finite-polish": ["finite-enrich-1-10"],
+    "finite-enrich-11-20": ["finite-enrich-1-10", "finite-polish"],
+}
+
+
+def run_one(name: str) -> tuple[str, float]:
+    """Run one experiment; return (status, seconds), status in PASS/FAIL."""
     cmd, cwd, item = EXPERIMENTS[name]
     print(f"\n=== {name}  ({item}) ===", flush=True)
     print(" ".join(str(c) for c in cmd), flush=True)
     tic = time.time()
-    subprocess.run(cmd, cwd=cwd, check=True)
-    print(f"=== completed {name} in {time.time()-tic:.1f} s ===", flush=True)
+    proc = subprocess.run(cmd, cwd=cwd)
+    dt = time.time() - tic
+    if proc.returncode == 0:
+        print(f"=== completed {name} in {dt:.1f} s ===", flush=True)
+        return "PASS", dt
+    print(f"=== FAILED {name} (exit {proc.returncode}) after {dt:.1f} s ===",
+          flush=True)
+    return "FAIL", dt
+
+
+def run_all(names: list[str], stop_on_fail: bool) -> int:
+    status: dict[str, str] = {}
+    times: dict[str, float] = {}
+    for name in names:
+        broken = [d for d in DEPENDS.get(name, ())
+                  if status.get(d) in ("FAIL", "SKIP")]
+        if broken:
+            print(f"\n=== SKIPPED {name}: depends on failed step(s) "
+                  f"{', '.join(broken)} ===", flush=True)
+            status[name] = "SKIP"
+            continue
+        status[name], times[name] = run_one(name)
+        if status[name] == "FAIL" and stop_on_fail:
+            break
+    print("\n" + "=" * 60)
+    print("Reproduction summary")
+    for name in names:
+        st = status.get(name, "NOT RUN")
+        t = f"{times[name]:8.1f} s" if name in times else " " * 10
+        print(f"  {st:7s} {t}  {name:22s} {EXPERIMENTS[name][2]}")
+    n_fail = sum(v == "FAIL" for v in status.values())
+    n_skip = sum(v == "SKIP" for v in status.values())
+    n_pass = sum(v == "PASS" for v in status.values())
+    print(f"  {n_pass} passed, {n_fail} failed, {n_skip} skipped, "
+          f"{len(names) - len(status)} not run")
+    return 1 if (n_fail or n_skip) else 0
 
 
 def main() -> None:
@@ -90,6 +137,8 @@ def main() -> None:
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--paper", action="store_true")
     ap.add_argument("--experiment", choices=sorted(set(EXPERIMENTS) | set(GROUPS)))
+    ap.add_argument("--stop-on-fail", action="store_true",
+                    help="abort at the first failing step (old behavior)")
     args = ap.parse_args()
     if args.list:
         print("Experiments:")
@@ -107,8 +156,7 @@ def main() -> None:
         names = GROUPS.get(args.experiment, [args.experiment])
     else:
         ap.error("choose --list, --quick, --paper, or --experiment NAME")
-    for name in names:
-        run_one(name)
+    sys.exit(run_all(names, stop_on_fail=args.stop_on_fail))
 
 
 if __name__ == "__main__":

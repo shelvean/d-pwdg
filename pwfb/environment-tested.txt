@@ -1,0 +1,8 @@
+Package validation environment
+Python 3.13.5
+numpy 2.3.5
+scipy 1.17.0
+pandas 2.2.3
+mpmath 1.3.0
+matplotlib 3.10.8
+TeX Live 2025/dev (pdflatex available for PGF/PDF figure generation)

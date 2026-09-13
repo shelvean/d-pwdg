@@ -14,6 +14,18 @@ together with the manuscript itself under [`paper/`](paper/) —
 figures it includes.  [`REPRODUCE.md`](REPRODUCE.md) maps every numbered table
 and figure of the PDF onto the script that produces it.
 
+The same directory also holds two further manuscripts by the author, supplied
+as compiled PDFs only:
+
+> **Conforming Bernstein–Bézier Quasi-Trefftz Spaces for Variable-Coefficient
+> Elliptic Problems** ([PDF](paper/Kapita_C0_Bernstein_qT.pdf), September 2026)
+>
+> **A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary
+> Hamilton–Jacobi Equations**
+> ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf), September 2026)
+
+The code in this repository accompanies the Helmholtz manuscript alone.
+
 The code is written as a transparent numerical-analysis implementation rather than a general finite-element package.  The aim is that the main mathematical objects in the paper can be found directly in the source: local Trefftz functions, PWDG fluxes, the weighted skeleton residual, graph-Riesz normalization, local Cauchy-trace compression, complex directions, variable projection, and the MOVE/ENRICH/REFINE adaptive loop.
 
 The cleanup in this archive is organizational only.  Dense numerical kernels remain vectorized with NumPy/SciPy, sparse assembly is retained, and the quadrature orders, nonlinear tolerances, continuation strategy, and audited precision settings are unchanged.  Long algebraic expressions have been broken into named intermediate quantities and comments have been added around the mathematical steps.
@@ -50,10 +62,13 @@ validation/
     verification record for the audited transmission driver
 
 paper/
-    Kapita_Direction_Adaptive_PWDG_Helmholtz.tex   manuscript source
-    Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf   compiled manuscript
-    sn-jnl.cls, sn-mathphys-num.bst                Springer Nature style files
-    figures/                 figures included by the manuscript
+    Kapita_Direction_Adaptive_PWDG_Helmholtz.tex   Helmholtz manuscript source
+    Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf   compiled Helmholtz manuscript
+    sn-jnl.cls, sn-mathphys-num.bst                LaTeX class and bibliography style it compiles with
+    figures/                 figures included by the Helmholtz manuscript
+    Kapita_C0_Bernstein_qT.pdf                     conforming Bernstein-Bezier qT manuscript
+    Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf   Bernstein qT Hamilton-Jacobi manuscript
+    README.txt               index of the three manuscripts
 
 results/                     created at run time by the drivers (git-ignored)
 generated/                   created at run time by audited_source (git-ignored)
@@ -187,8 +202,19 @@ accompanying manuscript:
 > Methods for the Helmholtz Equation*, Department of Mathematics, Texas A&M
 > University, August 2026.
 
-`CITATION.txt` carries the same reference in plain text, and the manuscript
-itself is under [`paper/`](paper/).
+The two Bernstein quasi-Trefftz manuscripts under [`paper/`](paper/) are cited
+as
+
+> Shelvean Kapita, *Conforming Bernstein–Bézier Quasi-Trefftz Spaces for
+> Variable-Coefficient Elliptic Problems*, Department of Mathematics, Texas
+> A&M University, September 2026.
+
+> Shelvean Kapita, *A High-Order C0 Bernstein Quasi-Trefftz Method for
+> Stationary Hamilton–Jacobi Equations*, Department of Mathematics, Texas A&M
+> University, September 2026.
+
+`CITATION.txt` carries the same references in plain text, and the manuscripts
+themselves are under [`paper/`](paper/).
 
 ## License
 

@@ -1,5 +1,14 @@
 Shelvean Kapita
+Department of Mathematics, Texas A&M University
+
 Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz Equation
 Research code accompanying the manuscript
 August 2026
-Department of Mathematics, Texas A&M University
+
+Conforming Bernstein-Bezier Quasi-Trefftz Spaces for Variable-Coefficient Elliptic Problems
+Manuscript, paper/Kapita_C0_Bernstein_qT.pdf
+September 2026
+
+A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary Hamilton-Jacobi Equations
+Manuscript, paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
+September 2026

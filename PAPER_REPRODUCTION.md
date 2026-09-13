@@ -20,7 +20,7 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-A tested environment on 18 August 2026 used Python 3.13.5, NumPy 2.3.5,
+A tested environment in August 2026 used Python 3.13.5, NumPy 2.3.5,
 SciPy 1.17.0, pandas 2.2.3 and Matplotlib 3.10.8.
 
 ## One-command interface

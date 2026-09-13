@@ -1,7 +1,6 @@
 """Continue residual-based ENRICH--MOVE from M=11 to M=20.
 
 Author: Shelvean Kapita
-Date: August 2026
 
 The starting M=10 state is read from the polished continuation file.  The birth
 step uses a 72-angle residual-only dictionary; this refines the search grid and
@@ -31,7 +30,6 @@ from experiments.experiment_finite_direction_capacity import (
 )
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"

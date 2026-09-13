@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 The edge integrals use Gauss-Legendre quadrature on ``[0,1]``.  Area error
 measurements use a tensor-product rule mapped to the reference triangle.  The
 Trefftz matrices themselves are assembled from edge integrals.
@@ -20,7 +16,6 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 
 def gauss01(order:

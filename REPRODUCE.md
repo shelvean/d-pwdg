@@ -1,6 +1,6 @@
 # Reproducing the manuscript results
 
-**Shelvean Kapita — August 2026**
+**Shelvean Kapita**
 
 This repository holds only what the submitted manuscript needs. Every source
 file here produces a numbered table or figure, or is imported by something that

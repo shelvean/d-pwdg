@@ -1,4 +1,4 @@
-Tested August 2026
+Tested environment
 Python 3.13.5
 numpy 2.3.5
 scipy 1.17.0

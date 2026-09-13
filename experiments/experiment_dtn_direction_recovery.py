@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 Three experiments are provided:
   1. centered outgoing Hankel wave (calibration),
   2. off-center outgoing Hankel wave (geometry-vs-physics test),
@@ -40,7 +36,6 @@ from core.dtn_pwdg import (
 )
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 
 def sobol_angles(n, seed=17):

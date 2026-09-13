@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 Purpose
 -------
 This script is the reference implementation for the prescribed-tolerance
@@ -65,7 +61,6 @@ from __future__ import annotations
 from pathlib import Path
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "results" / "adaptive_threshold"

@@ -1,8 +1,7 @@
 # Direction-Adaptive PWDG for the Helmholtz Equation
 
 **Shelvean Kapita**  
-Department of Mathematics, Texas A&M University  
-**August 2026**
+Department of Mathematics, Texas A&M University
 
 This repository contains the cleaned research implementation accompanying
 
@@ -18,11 +17,11 @@ The same directory also holds two further manuscripts by the author, supplied
 as compiled PDFs only:
 
 > **Conforming Bernstein–Bézier Quasi-Trefftz Spaces for Variable-Coefficient
-> Elliptic Problems** ([PDF](paper/Kapita_C0_Bernstein_qT.pdf), September 2026)
+> Elliptic Problems** ([PDF](paper/Kapita_C0_Bernstein_qT.pdf))
 >
 > **A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary
 > Hamilton–Jacobi Equations**
-> ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf), September 2026)
+> ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf))
 
 The code in this repository accompanies the Helmholtz manuscript alone.
 
@@ -191,7 +190,7 @@ The audited CSV/figure outputs used in the manuscript are supplied under `data/a
 
 ## Code style
 
-Every principal source file identifies **Shelvean Kapita** and **August 2026** near the top.  Comments are concentrated around the numerical method rather than narrating ordinary Python syntax.  Vectorized `einsum`, sparse matrix assembly, and SciPy linear algebra are retained where they materially affect runtime.
+Every principal source file identifies **Shelvean Kapita** near the top.  Comments are concentrated around the numerical method rather than narrating ordinary Python syntax.  Vectorized `einsum`, sparse matrix assembly, and SciPy linear algebra are retained where they materially affect runtime.
 
 ## Citation
 
@@ -200,18 +199,18 @@ accompanying manuscript:
 
 > Shelvean Kapita, *Direction-Adaptive Plane-Wave Discontinuous Galerkin
 > Methods for the Helmholtz Equation*, Department of Mathematics, Texas A&M
-> University, August 2026.
+> University.
 
 The two Bernstein quasi-Trefftz manuscripts under [`paper/`](paper/) are cited
 as
 
 > Shelvean Kapita, *Conforming Bernstein–Bézier Quasi-Trefftz Spaces for
 > Variable-Coefficient Elliptic Problems*, Department of Mathematics, Texas
-> A&M University, September 2026.
+> A&M University.
 
 > Shelvean Kapita, *A High-Order C0 Bernstein Quasi-Trefftz Method for
 > Stationary Hamilton–Jacobi Equations*, Department of Mathematics, Texas A&M
-> University, September 2026.
+> University.
 
 `CITATION.txt` carries the same references in plain text, and the manuscripts
 themselves are under [`paper/`](paper/).

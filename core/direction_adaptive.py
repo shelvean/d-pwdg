@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 Purpose
 -------
 The class :class:`PWDGDictionary` assembles and solves the PWDG equations when
@@ -43,7 +39,6 @@ The emphasis is on keeping the variational quantities visible in the code.
 from __future__ import annotations
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 import numpy as np
 import scipy.sparse as sp

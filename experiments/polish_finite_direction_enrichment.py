@@ -1,7 +1,6 @@
 """Polish the M=1,...,10 finite-direction continuation results.
 
 Author: Shelvean Kapita
-Date: August 2026
 
 This script does not alter the approximation space.  It restarts each converged
 angle state with higher edge quadrature and a smaller finite-difference step so
@@ -28,7 +27,6 @@ from experiments.experiment_finite_direction_capacity import (
 )
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"

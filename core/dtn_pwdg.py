@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 This module extends the direction-adaptive PWDG reference implementation to
 an annular computational domain with an exact circular outer boundary.  The
 Dirichlet-to-Neumann map is evaluated by a truncated Fourier series, following
@@ -32,7 +28,6 @@ from scipy.special import hankel2, h2vp, jv
 from .quadrature import gauss01
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 
 @dataclass(frozen=True)

@@ -1,7 +1,6 @@
 # Map from the manuscript to the code
 
-**Author:** Shelvean Kapita  
-**Date:** August 2026
+**Author:** Shelvean Kapita
 
 This file records where the principal mathematical objects in the manuscript appear in the reproducibility code.  It is intended to make the implementation auditable without requiring the reader to infer the variational structure from generic finite element software.
 

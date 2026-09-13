@@ -1,7 +1,7 @@
 Manuscripts by Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Kapita_Direction_Adaptive_PWDG_Helmholtz.tex / .pdf     August 2026
+Kapita_Direction_Adaptive_PWDG_Helmholtz.tex / .pdf
     Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the
     Helmholtz Equation.  The code, data and reproduction guides in this
     repository accompany this manuscript.  sn-jnl.cls and
@@ -11,11 +11,11 @@ Kapita_Direction_Adaptive_PWDG_Helmholtz.tex / .pdf     August 2026
     the 8-triangle calculations already attain relative L2 error at working
     precision.
 
-Kapita_C0_Bernstein_qT.pdf                              September 2026
+Kapita_C0_Bernstein_qT.pdf
     Conforming Bernstein-Bezier Quasi-Trefftz Spaces for Variable-Coefficient
     Elliptic Problems.
 
-Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf       September 2026
+Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
     A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary
     Hamilton-Jacobi Equations.
 

@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 The solver first constructs, on every element, the Cauchy-trace Gramian
 
     M_K = k <u,v>_{dK} + k^{-1} <dn u,dn v>_{dK},
@@ -33,7 +29,6 @@ import scipy.sparse.linalg as spla
 from .dtn_pwdg import dtn_eigenvalues
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 
 class CompressedDtNPWDG:

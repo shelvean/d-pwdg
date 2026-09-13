@@ -1,7 +1,6 @@
-"""Top-level reproducibility launcher for the JSC Helmholtz manuscript.
+"""Top-level reproducibility launcher for the Helmholtz manuscript.
 
 Author: Shelvean Kapita
-Date: August 2026
 
 This repository holds only what the submitted manuscript needs.  Each entry
 below produces a numbered table or figure; nothing here is a development or

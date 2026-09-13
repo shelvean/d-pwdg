@@ -1,7 +1,6 @@
 """Audited DtN trace-cutoff sweep in IEEE double precision.
 
 Author: Shelvean Kapita
-Date: August 2026
 
 The experiment uses the exact annulus 0.5 < r < 1 with one radial layer and
 eight exact curved sectors, k=8, DtN truncation N=40, and 44-point edge and
@@ -24,7 +23,6 @@ from core.compressed_dtn import CompressedDtNPWDG
 from core.dtn_pwdg import PolarAnnulusMesh, SoundSoftDiskScattering
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[2]
 RESULTS = ROOT / "results" / "precision_audit"

@@ -1,6 +1,6 @@
 # Validation of the cleaned source
 
-**Shelvean Kapita — August 2026**
+**Shelvean Kapita**
 
 The cleanup was checked without changing the numerical algorithms.
 

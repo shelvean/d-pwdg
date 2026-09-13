@@ -1,7 +1,6 @@
 """Residual-based ENRICH--MOVE continuation for M=1,...,10.
 
 Author: Shelvean Kapita
-Date: August 2026
 
 The new direction is chosen from a fixed residual-only angular dictionary.  The
 exact directions are not used by ENRICH or MOVE; they are used afterward only
@@ -32,7 +31,6 @@ from experiments.experiment_finite_direction_capacity import (
 )
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"

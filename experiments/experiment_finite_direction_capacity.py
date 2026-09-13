@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 This script studies a nested exact solution containing up to twenty plane-wave
 components.  For each M, the adaptive and uniform spaces use the same number of
 coefficients.  The exact directions are used only to generate boundary data
@@ -39,7 +35,6 @@ from core.direction_adaptive import (
 from core.pwdg import square_mesh
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"

@@ -33,7 +33,6 @@ and the trailing digits of large condition numbers, are hardware
 dependent even with identical numpy/scipy versions.
 
 Author: Shelvean Kapita
-Date: August 2026
 """
 from __future__ import annotations
 

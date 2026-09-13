@@ -5,10 +5,6 @@ Author
 Shelvean Kapita
 Department of Mathematics, Texas A&M University
 
-Date
-----
-August 2026
-
 Notes
 -----
 This module intentionally contains only the small amount of mesh bookkeeping
@@ -25,7 +21,6 @@ from __future__ import annotations
 import numpy as np
 
 __author__ = "Shelvean Kapita"
-__date__ = "August 2026"
 
 ALPHA = 0.5
 BETA = 0.5

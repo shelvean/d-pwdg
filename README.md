@@ -13,17 +13,21 @@ together with the manuscript itself under [`paper/`](paper/) —
 figures it includes.  [`REPRODUCE.md`](REPRODUCE.md) maps every numbered table
 and figure of the PDF onto the script that produces it.
 
-The same directory also holds two further manuscripts by the author, supplied
-as compiled PDFs only:
+The same directory also holds two further manuscripts by the author:
 
 > **Conforming Bernstein–Bézier Quasi-Trefftz Spaces for Variable-Coefficient
-> Elliptic Problems** ([PDF](paper/Kapita_C0_Bernstein_qT.pdf))
+> Elliptic Problems** ([PDF](paper/Kapita_C0_Bernstein_qT.pdf)), supplied as a
+> compiled PDF only.
 >
 > **A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary
 > Hamilton–Jacobi Equations**
-> ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf))
+> ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf)).  Its LaTeX
+> source, Python code, data and figures form the self-contained subproject
+> [`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/), which has
+> its own README.
 
-The code in this repository accompanies the Helmholtz manuscript alone.
+The top-level code, launchers and reproduction guides accompany the Helmholtz
+manuscript alone.
 
 The code is written as a transparent numerical-analysis implementation rather than a general finite-element package.  The aim is that the main mathematical objects in the paper can be found directly in the source: local Trefftz functions, PWDG fluxes, the weighted skeleton residual, graph-Riesz normalization, local Cauchy-trace compression, complex directions, variable projection, and the MOVE/ENRICH/REFINE adaptive loop.
 
@@ -68,6 +72,10 @@ paper/
     Kapita_C0_Bernstein_qT.pdf                     conforming Bernstein-Bezier qT manuscript
     Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf   Bernstein qT Hamilton-Jacobi manuscript
     README.txt               index of the three manuscripts
+
+bernstein_qt_hamilton_jacobi/
+    self-contained subproject for the Bernstein qT Hamilton-Jacobi manuscript:
+    code/  data/  figures/  paper/ (main.tex + compiled PDFs)  package_notes/
 
 results/                     created at run time by the drivers (git-ignored)
 generated/                   created at run time by audited_source (git-ignored)
@@ -213,7 +221,9 @@ as
 > University.
 
 `CITATION.txt` carries the same references in plain text, and the manuscripts
-themselves are under [`paper/`](paper/).
+themselves are under [`paper/`](paper/).  The code and data for the
+Hamilton–Jacobi manuscript are under
+[`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/).
 
 ## License
 

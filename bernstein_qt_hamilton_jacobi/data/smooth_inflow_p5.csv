@@ -1,0 +1,2 @@
+n,ntri,p,test_degree,full_c0_dofs,fixed_boundary_dofs,boundary,free_dofs,residual_rows,retained_local_dim,relL2,relH1,residual_l2,residual_rms,success,nfev,njev,cost,optimality,seconds,local_blocks_full_rank,min_transversality,max_local_deep_cond
+3,18,5,4,256,16,inflow,240,270,6,0.0004669806847919896,0.0035953969337438377,2.3437304397616867e-08,1.4263489228544209e-09,True,8,8,2.746536187132755e-16,4.3560298037634084e-15,0.12993840299986914,True,2.6584194012301654,216.36584955658185

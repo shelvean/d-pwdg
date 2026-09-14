@@ -1,0 +1,7 @@
+numpy>=1.24
+scipy>=1.10
+pandas>=2.0
+matplotlib>=3.7
+# numba is imported only by the Marmousi fast-sweeping reference
+# (code/marmousi_fast_sweeping_reference.py and the drivers that use it).
+numba

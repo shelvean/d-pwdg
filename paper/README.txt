@@ -24,3 +24,9 @@ Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
 
 The conforming Bernstein-Bezier quasi-Trefftz manuscript is supplied as a
 compiled PDF only; its code is not part of this repository.
+
+The conformal spherical splines manuscript (Conformal Spherical Splines for
+the Laplace-Beltrami Operator on Genus-Zero Surfaces: Construction,
+Algorithm, and Experiments, submitted to the SIAM Journal on Scientific
+Computing) is not included here; its Python code and data are the
+subproject ../conformal_spherical_splines/.

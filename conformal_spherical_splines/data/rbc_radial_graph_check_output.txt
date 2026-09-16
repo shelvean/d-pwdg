@@ -1,0 +1,3 @@
+psi monotone in eta (radial graph): True
+min angle between ray and surface: 3.44 deg at psi = 60.4 deg
+max |rho_psi|/rho = 16.65

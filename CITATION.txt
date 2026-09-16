@@ -10,3 +10,7 @@ Manuscript, paper/Kapita_C0_Bernstein_qT.pdf
 A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary Hamilton-Jacobi Equations
 Manuscript, paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
 Source, code and data, bernstein_qt_hamilton_jacobi/
+
+Conformal Spherical Splines for the Laplace-Beltrami Operator on Genus-Zero Surfaces: Construction, Algorithm, and Experiments
+Submitted to the SIAM Journal on Scientific Computing
+Code and data, conformal_spherical_splines/

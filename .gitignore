@@ -28,3 +28,15 @@ build.log
 
 # Bernstein qT Hamilton-Jacobi subproject: Marmousi reproduction output
 bernstein_qt_hamilton_jacobi/reproduced_marmousi/
+
+# Conformal spherical splines subproject: the committed run log behind Table 5
+# is not a LaTeX log, and the scripts write their outputs into the subproject
+# directory itself (the reference copies live in its data/).
+!conformal_spherical_splines/data/compare_fem.log
+conformal_spherical_splines/*.jsonl
+conformal_spherical_splines/*.json
+conformal_spherical_splines/*.npy
+conformal_spherical_splines/*.npz
+conformal_spherical_splines/*.pdf
+conformal_spherical_splines/*.png
+conformal_spherical_splines/*.tex

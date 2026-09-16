@@ -26,6 +26,15 @@ The same directory also holds two further manuscripts by the author:
 > [`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/), which has
 > its own README.
 
+A fourth manuscript is represented by its code and data alone:
+
+> **Conformal Spherical Splines for the Laplace–Beltrami Operator on
+> Genus-Zero Surfaces: Construction, Algorithm, and Experiments**, submitted
+> to the SIAM Journal on Scientific Computing.  Its Python implementation and
+> the raw outputs behind every table form the self-contained subproject
+> [`conformal_spherical_splines/`](conformal_spherical_splines/), which has its
+> own README and its own (BSD 2-Clause) license.
+
 The top-level code, launchers and reproduction guides accompany the Helmholtz
 manuscript alone.
 
@@ -76,6 +85,11 @@ paper/
 bernstein_qt_hamilton_jacobi/
     self-contained subproject for the Bernstein qT Hamilton-Jacobi manuscript:
     code/  data/  figures/  paper/ (main.tex + compiled PDFs)  package_notes/
+
+conformal_spherical_splines/
+    self-contained subproject for the conformal spherical splines manuscript:
+    the Python modules and experiment scripts, data/ (raw run logs), README.md,
+    LICENSE (BSD 2-Clause), requirements.txt
 
 results/                     created at run time by the drivers (git-ignored)
 generated/                   created at run time by audited_source (git-ignored)
@@ -220,10 +234,19 @@ as
 > Stationary Hamilton–Jacobi Equations*, Department of Mathematics, Texas A&M
 > University.
 
+The conformal spherical splines code under
+[`conformal_spherical_splines/`](conformal_spherical_splines/) is cited as
+
+> Shelvean Kapita, *Conformal Spherical Splines for the Laplace–Beltrami
+> Operator on Genus-Zero Surfaces: Construction, Algorithm, and Experiments*,
+> submitted to the SIAM Journal on Scientific Computing.
+
 `CITATION.txt` carries the same references in plain text, and the manuscripts
 themselves are under [`paper/`](paper/).  The code and data for the
 Hamilton–Jacobi manuscript are under
-[`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/).
+[`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/), and those
+for the conformal spherical splines manuscript under
+[`conformal_spherical_splines/`](conformal_spherical_splines/).
 
 ## License
 
@@ -232,6 +255,11 @@ The code, data and manuscript in this repository are released under
 worldwide, so no permission is needed to use, modify or redistribute them.
 Attribution is not legally required; a citation of the manuscript is the
 customary scholarly courtesy.
+
+The subproject [`conformal_spherical_splines/`](conformal_spherical_splines/)
+is the one exception among the author's own files: it is released under the
+[BSD 2-Clause License](conformal_spherical_splines/LICENSE) that it carries,
+not under the CC0 waiver.
 
 Two files are **not** the author's to license and are not covered by the CC0
 waiver: `paper/sn-jnl.cls` and `paper/sn-mathphys-num.bst` are the Springer

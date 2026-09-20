@@ -23,7 +23,7 @@ The same directory also holds two further manuscripts by the author:
 > Hamilton–Jacobi Equations**
 > ([PDF](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf)).  Its LaTeX
 > source, Python code, data and figures form the self-contained subproject
-> [`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/), which has
+> [`bernstein_quasi_trefftz_hamilton_jacobi/`](bernstein_quasi_trefftz_hamilton_jacobi/), which has
 > its own README.
 
 The top-level code, launchers and reproduction guides accompany the Helmholtz
@@ -73,7 +73,7 @@ paper/
     Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf   Bernstein qT Hamilton-Jacobi manuscript
     README.txt               index of the three manuscripts
 
-bernstein_qt_hamilton_jacobi/
+bernstein_quasi_trefftz_hamilton_jacobi/
     self-contained subproject for the Bernstein qT Hamilton-Jacobi manuscript:
     code/  data/  figures/  paper/ (main.tex + compiled PDFs)  package_notes/
 
@@ -223,7 +223,7 @@ as
 `CITATION.txt` carries the same references in plain text, and the manuscripts
 themselves are under [`paper/`](paper/).  The code and data for the
 Hamilton–Jacobi manuscript are under
-[`bernstein_qt_hamilton_jacobi/`](bernstein_qt_hamilton_jacobi/).
+[`bernstein_quasi_trefftz_hamilton_jacobi/`](bernstein_quasi_trefftz_hamilton_jacobi/).
 
 ## License
 

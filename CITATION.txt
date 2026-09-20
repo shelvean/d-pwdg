@@ -9,4 +9,4 @@ Manuscript, paper/Kapita_C0_Bernstein_qT.pdf
 
 A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary Hamilton-Jacobi Equations
 Manuscript, paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
-Source, code and data, bernstein_qt_hamilton_jacobi/
+Source, code and data, bernstein_quasi_trefftz_hamilton_jacobi/

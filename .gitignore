@@ -27,4 +27,4 @@ build.log
 .DS_Store
 
 # Bernstein qT Hamilton-Jacobi subproject: Marmousi reproduction output
-bernstein_qt_hamilton_jacobi/reproduced_marmousi/
+bernstein_quasi_trefftz_hamilton_jacobi/reproduced_marmousi/

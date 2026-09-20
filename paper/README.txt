@@ -18,7 +18,7 @@ Kapita_C0_Bernstein_qT.pdf
 Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
     A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary
     Hamilton-Jacobi Equations.  Its LaTeX source, Python code, data and
-    figures are the subproject ../bernstein_qt_hamilton_jacobi/, which
+    figures are the subproject ../bernstein_quasi_trefftz_hamilton_jacobi/, which
     also carries the two PDFs compiled for the Journal of Scientific
     Computing submission.
 

@@ -13,6 +13,7 @@ inside the subproject it belongs to.
 | **Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz Equation** | [`direction_adaptive_pwdg_helmholtz/`](direction_adaptive_pwdg_helmholtz/): code, data, reproduction guides, and the manuscript ([LaTeX source](direction_adaptive_pwdg_helmholtz/paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.tex), [PDF](direction_adaptive_pwdg_helmholtz/paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf)) |
 | **Conforming Bernstein–Bézier Quasi-Trefftz Spaces for Variable-Coefficient Elliptic Problems** | [`paper/Kapita_C0_Bernstein_qT.pdf`](paper/Kapita_C0_Bernstein_qT.pdf), compiled PDF only; its code is not part of this repository |
 | **A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary Hamilton–Jacobi Equations** | [`bernstein_quasi_trefftz_hamilton_jacobi/`](bernstein_quasi_trefftz_hamilton_jacobi/): LaTeX source, code, data and figures; a compiled PDF is also under [`paper/`](paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf) |
+| **Conformal Bernstein–Bézier Splines on Compact Two-Manifolds of Positive Genus: Construction, Algorithm, and Experiments** | [`conformal_bb_splines/`](conformal_bb_splines/): code and JSON logs for every table and figure |
 | **Intrinsic Finite Elements for PDEs and Spectra on Riemannian Manifolds** | [`intrinsic_finite_elements_riemannian_manifolds/`](intrinsic_finite_elements_riemannian_manifolds/): the `riemannfem` library and the scripts for every table and figure |
 
 ## Layout
@@ -21,6 +22,7 @@ inside the subproject it belongs to.
 direction_adaptive_pwdg_helmholtz/              Helmholtz PWDG subproject (code + manuscript)
 bernstein_quasi_trefftz_hamilton_jacobi/        Bernstein qT Hamilton-Jacobi subproject (code + manuscript)
 intrinsic_finite_elements_riemannian_manifolds/ intrinsic FEM subproject (code)
+conformal_bb_splines/                           conformal Bernstein-Bezier splines subproject (code)
 paper/                                          compiled PDFs of the two Bernstein qT manuscripts
 CITATION.txt                                    plain-text references for every manuscript
 LICENSE                                         CC0 1.0 Universal, repository-wide

@@ -14,3 +14,6 @@ Source, code and data, bernstein_quasi_trefftz_hamilton_jacobi/
 
 Intrinsic Finite Elements for PDEs and Spectra on Riemannian Manifolds
 Research code and data, intrinsic_finite_elements_riemannian_manifolds/
+
+Conformal Bernstein-Bezier Splines on Compact Two-Manifolds of Positive Genus: Construction, Algorithm, and Experiments
+Research code and data, conformal_bb_splines/

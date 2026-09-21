@@ -5,9 +5,6 @@ Direction-Adaptive Plane-Wave Discontinuous Galerkin Methods for the Helmholtz E
 Manuscript, direction_adaptive_pwdg_helmholtz/paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf
 Research code and data, direction_adaptive_pwdg_helmholtz/
 
-Conforming Bernstein-Bezier Quasi-Trefftz Spaces for Variable-Coefficient Elliptic Problems
-Manuscript, paper/Kapita_C0_Bernstein_qT.pdf
-
 A High-Order C0 Bernstein Quasi-Trefftz Method for Stationary Hamilton-Jacobi Equations
 Manuscript, paper/Kapita_Bernstein_QuasiTrefftz_Hamilton_Jacobi.pdf
 Source, code and data, bernstein_quasi_trefftz_hamilton_jacobi/

@@ -31,12 +31,26 @@ def render(emb, n, m, view, out, sub=8, tube=0.012, size=(1600, 1300), inset=Non
     if inset is not None: Xw = inset(Xw)
     s = mlab.triangular_mesh(Xw[:, 0], Xw[:, 1], Xw[:, 2], Fw, color=(0.86, 0.88, 0.93), opacity=1.0)
     s.actor.property.specular = 0.15; s.actor.property.specular_power = 20
-    # mesh edges
+    # mesh edges: one line source with connectivity (fast, single actor)
+    px, py, pz, conn = [], [], [], []
+    k = 0
     for tri in T:
         P = V[list(tri)]
         for a, b in [(0, 1), (1, 2), (2, 0)]:
-            ts = np.linspace(0, 1, 16); pts = np.array([emb(*(P[a] * (1 - t) + P[b] * t)) for t in ts])
-            mlab.plot3d(pts[:, 0], pts[:, 1], pts[:, 2], color=(0.25, 0.25, 0.3), tube_radius=tube)
+            ts = np.linspace(0, 1, 12)
+            pts = np.array([emb(*(P[a] * (1 - t) + P[b] * t)) for t in ts])
+            if inset is not None: pts = inset(pts)
+            px += list(pts[:, 0]); py += list(pts[:, 1]); pz += list(pts[:, 2])
+            conn += [(k + i, k + i + 1) for i in range(len(ts) - 1)]
+            k += len(ts)
+    src = mlab.pipeline.scalar_scatter(np.array(px), np.array(py), np.array(pz))
+    src.mlab_source.dataset.lines = np.array(conn)
+    lines = mlab.pipeline.stripper(src)
+    mlab.pipeline.surface(lines, color=(0.25, 0.25, 0.3), line_width=1.0,
+                          representation='wireframe')
+    tb = mlab.pipeline.tube(lines, tube_radius=tube)
+    tb.filter.number_of_sides = 8
+    mlab.pipeline.surface(tb, color=(0.25, 0.25, 0.3))
     mlab.view(**view); fig.scene.parallel_projection = True
     mlab.savefig(out, size=size); mlab.close(fig); print(out)
 

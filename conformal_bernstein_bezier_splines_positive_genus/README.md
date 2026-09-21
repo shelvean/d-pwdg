@@ -1,61 +1,65 @@
-# Recovered code for `quotients-13.pdf`
+# Code for "Conformal Bernstein-Bezier Splines on Compact Two-Manifolds of Positive Genus"
 
-Manuscript: *Conformal Bernstein–Bézier Splines on Compact Two-Manifolds of Positive Genus: Construction, Algorithm, and Experiments* (35 pages, supplied September 20, 2026).
+Flat layout; run every command from this directory. Python 3.10+, numpy,
+scipy, matplotlib; Mayavi and VTK under `xvfb-run` for the 3D renderings
+(`xvfb-run -a -s "-screen 0 1500x1100x24" python3 <script>`). Set
+`QT_QPA_PLATFORM=offscreen` when a module that imports Mayavi is used
+without a display. No caches or build products are included; the JSON files
+are the logs behind the tables.
 
-**Status:** This is a consolidated archive of **existing code located in the author's saved files** plus the clearly marked `hyperbolic/spectrum_driver_q13.py` convenience script. This is **not established to be the exact, complete reproducibility archive used to make every figure and table of `quotients-13.pdf`.** Do not submit it as complete manuscript reproducibility without filling the gaps below and comparing outputs with the paper. The two original recovered source archives are `genus1plus-code-session.zip` and `hypsplines_revised_code.zip` (September 17, 2026). Their source files are retained unmodified apart from grouping in subdirectories. The later manuscript has experiments beyond those original packages.
+## Modules
 
-## Installation
+| file | contents |
+|---|---|
+| `flatquot.py` | flat quotients (torus, Klein bottle, Mobius band): criss-cross mesh, pairings, C^r rows across interior and paired edges, weighted assembly by conical Gauss rule, bordered Poisson solve, eigensolve, error routine |
+| `flatexact.py` | closed-form assembly on the flat quotients with the weight replaced by its Bernstein interpolant (Section 3.4) |
+| `metric_assembly.py` | assembly on the flat torus with a general metric tensor (not used by the paper; kept for the trefoil example) |
+| `prolong.py` | rank-revealing elimination: null-space matrix Z of the smoothness matrix J |
+| `hypgeom.py` | hyperboloid model: isometries, Bolza octagon, regular polygons and pairings, Klein chart, Duffy/Gauss rule, angle defect |
+| `hypbb.py` | Bernstein-Bezier forms on the hyperboloid, tangential gradients, local matrices, quadrature points with the far-corner collapse |
+| `hypmesh.py` | octagon mesh, geodesic refinement, degree-of-freedom identification across paired sides, assembly on the Bolza surface |
+| `hypsurf.py` | regular n-gon surfaces with arbitrary side pairing (genus ladder) |
+| `klein.py`, `nonor3.py` | Klein quartic and the nonorientable N_3 (polygon figure and the N_3 rows of Table gb) |
+| `intrinsic.py` | intrinsic presentation: triangles placed from edge lengths, transition isometries per edge, assembly without polygon or group |
+| `iso_fem.py` | isoparametric surface finite elements of degree k on a parametrized periodic surface, geometry of degree k or 1 |
+| `dtorus.py` | the discocyte torus (Evans-Fung profile revolved), conformal variable, weight; `dtorus_trig_backup.py` the earlier trigonometric profile |
+| `pants_mesh.py` | right-angled hexagons and the pants layouts in the Poincare disk |
+| `flat_maya.py`, `flat_figs.py`, `mayafigs.py` | Mayavi renderers for the flat quotients and the hyperbolic panels |
 
-Use Python 3.10+ and install `numpy scipy matplotlib sympy`. For optional 3-D renders also install `mayavi vtk` and use a suitable offscreen display such as `xvfb-run` on Linux. Run the commands from their respective subdirectories since the original code imports sibling modules by name.
+## Tables of quotients.tex
 
-## Flat quotients (`flat/`)
+| table | command | log |
+|---|---|---|
+| dim (flat rows) | `python3 run_cond.py` (first block) | printed |
+| dim (Bolza rows) | `python3 run_bolza.py` (dimensions printed with each row) | printed |
+| gb (flat rows) | `python3 gb_flat.py` | printed |
+| gb (Bolza row) | `python3 run_gb_bolza.py` | printed |
+| cond | `python3 run_cond.py` (second block) | printed |
+| poisson-torus, poisson-klein | `python3 poisson_flat.py torus`, `python3 poisson_flat.py ctorus`, `python3 poisson_flat.py klein` | `poisson_*.json` |
+| mobius | `python3 mobius_eig.py` | `mobius_eig.json` |
+| dtorus, closed-form comparison, isocmp | `python3 run_dtorus_tables.py` | `dtorus_table.json`, `dtorus_exact.json`, `iso_sweep.json` |
+| bolza, bolzaspec, odd-degree zero modes | `python3 run_bolza.py` | `bolza_conv.json`, `bolza_spectrum.json` |
+| intrinsic | `python3 run_intrinsic.py` | `bolza_intrinsic.json` |
+| ladder | `python3 run_ladder.py` | `genus_ladder.json` |
 
-- `flatquot.py`, `prolong.py`: coefficient constraints, mesh, assembly, Poisson and eigenvalue routines.
-- `gb_flat.py`: flat portion of Table 3.
-- `poisson_flat.py`: flat/conformal torus and Klein-bottle Poisson experiments (Tables 5--6 in the updated manuscript; older README numbers differ).
-- `mobius_eig.py`: conformal Möbius spectrum (Table 7).
-- `flat_figs.py`, `flat_maya.py`, `gallery_maya.py`, `mobius_fig.py`: corresponding display/field figures.
-- `data/`: original archived JSON results.
+## Figures of quotients.tex (raw Mayavi panels; labels are set in LaTeX)
 
-```bash
-cd flat
-python gb_flat.py
-python poisson_flat.py torus
-python poisson_flat.py ctorus
-python poisson_flat.py klein
-python mobius_eig.py
-```
+| figure | command | panels |
+|---|---|---|
+| flat-quotient gallery | `xvfb-run ... python3 gallery_maya.py` | `p_torus, p_clifford, p_klein, p_mobius` |
+| polygons, Bolza meshes, Bolza modes | `xvfb-run ... python3 mayafigs.py` | `p_poly_*, p_mesh0..2, p_mode1, p_mode5` |
+| pretzel | `xvfb-run ... python3 pretzel2.py` (needs `pretzel.py`) | `p_pretzel_mesh` |
+| pants decomposition | `python3 pants_mesh.py` | `p_hex1, p_hex2, p_hex4` |
+| Mobius eigenfunctions | `xvfb-run ... python3 mobius_fig.py` | `p_mobius_mode1, 9, 25` |
+| discocyte torus mesh and cutaway | `xvfb-run ... python3 dtorus_fig.py`, `xvfb-run ... python3 dtorus_cut.py` | `p_dtorus_mesh, p_dtorus_cut` |
+| discocyte eigenfunctions | `xvfb-run ... python3 dtorus_modes.py` | `p_dtorus_m1, m12, m30` |
 
-The larger Poisson sweeps can take significant time.
+The schematics (pairings of the square, the octagon pairing and corner walk,
+the C^r condition across a paired edge) are TikZ in the manuscript source.
 
-## Hyperbolic quotients (`hyperbolic/`)
+## Not in the paper
 
-- `hypgeom.py`, `hypbb.py`, `hypmesh.py`, `hypc1.py`, `prolong.py`: geometry, basis, assembly, smoothness constraints.
-- `test_bolza.py`, `test_hypbb.py`: core group/geometry and Bernstein/gluing checks.
-- `solve_bolza.py`: first-eigenvalue convergence on the Bolza surface (Table 10 in updated manuscript).
-- `hypsurf.py`: general regular even-sided polygons with opposite-edge pairings (the geometric family in Table 12).
-- `klein.py`, `nonor3.py`: other quotient geometries; `make_figs.py`, `mayafigs.py`: figure utilities.
-- `spectrum_driver_q13.py`: **new convenience driver**, not an archived original experiment script; computes a selected Bolza or higher-genus spectrum with the recovered code.
-
-```bash
-cd hyperbolic
-python test_bolza.py
-python test_hypbb.py
-python solve_bolza.py
-python spectrum_driver_q13.py bolza --degree 4 --level 1 --quadrature 44
-python spectrum_driver_q13.py genus --genus 3 --degree 4 --level 1 --quadrature 24
-```
-
-**Limits and missing code for this PDF**
-
-The located files do not establish the complete implementation behind the embedded-discocyte torus eigenvalue study and renderings (Table 8, Figures 9--10); its equal-degree **surface FEM comparison** (Table 9); the Bolza **intrinsic-edge-length triangulation** experiment (Table 1); all of the updated conditioning table; or exact scripts/data for every displayed eigenfunction and the complete genus ladder. Some of the original hyperbolic package includes extra related calculations (biharmonic and Selberg) not reported in this 35-page manuscript. Their presence in this archive is not evidence that they produced a particular table in `quotients-13.pdf`.
-
-Original flat README uses **older table numbers**. Consult the current PDF for the latest definitions, parameters, quadrature settings and table numbering, and compare outputs quantitatively rather than copying figures or reporting results as rerun. The optional new spectrum driver has not been exercised over every case in Tables 10--12.
-
-## Checks performed when consolidating
-
-- `python flat/gb_flat.py`: completed, Euler characteristics and boundary cycles as expected.
-- `python hyperbolic/test_bolza.py`: 28/28 tests passed.
-- `python hyperbolic/test_hypbb.py`: 26/26 tests passed.
-- A standalone genus-two, degree-four, level-one spectrum from `hypsurf.assemble_n()` yielded 254 DOFs and first nonzero eigenvalue about 3.85213851 at quadrature 16; the value is quadrature-dependent on the coarse polygon. This is **not** claimed as a reproduction of Table 12 at its specified quadrature.
-- The full Poisson and eigenvalue sweeps were **not completed** as part of this consolidation.
+`trefoil.py`, `trefoil_fig.py`, `tube_torus.py`, `embedded_eigs.py`,
+`dtorus_rbc*.py`, `dtorus_run.py`, `dtorus_high.json`, `iso_dtorus.json`,
+`iso_tube.json`, `trefoil_eigs*.json`: the trefoil tube, the tube torus and
+earlier profile runs, kept for the follow-up paper.

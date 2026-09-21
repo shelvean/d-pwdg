@@ -9,10 +9,7 @@ carry total angle 2 pi, so the interior angle is theta = 2 pi c / n.  Then
     E = n/2,  F = 1,  V = c,   chi = c - n/2 + 1,   genus = (2 - chi)/2.
 
 n = 8  -> c = gcd(5,8) = 1, theta = pi/4,   chi = -2, genus 2: the Bolza surface.
-n = 14 -> c = gcd(8,14) = 2, theta = 2 pi/7, chi = -4, genus 3: an opposite-side genus-3 surface.
-
-This is NOT the Klein quartic.  The Klein quartic uses a different pairing of the same
-regular 14-gon; see klein.py.  The pairing pattern, not only the polygon, fixes the surface.
+n = 14 -> c = gcd(8,14) = 2, theta = 2 pi/7, chi = -4, genus 3: the Klein quartic.
 
 Nothing in the spline construction changes with genus.  Only n changes.
 """

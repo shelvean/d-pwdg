@@ -169,16 +169,25 @@ def klein_area_weight(y):
     return (1.0 - np.sum(y * y, axis=-1)) ** (-1.5)
 
 
-def duffy_rule(n):
-    """Degree-(2n-1) quadrature on the reference triangle {(a,b): a,b>=0, a+b<=1}."""
+def duffy_rule(n, jacobi=False):
+    """Quadrature on the reference triangle {(a,b): a,b>=0, a+b<=1} by the
+    collapsed-coordinate map (u,v) -> (a,b) = (u, v(1-u)), whose Jacobian
+    (1-u) is a Jacobi weight. With jacobi=True the u-direction uses the
+    Gauss-Jacobi rule for the weight (1-u), which absorbs the Jacobian
+    (Karniadakis-Sherwin); with jacobi=False the classical Duffy rule with
+    Gauss-Legendre in both directions. The collapsed vertex is (a,b) = (1,0)."""
+    from scipy.special import roots_jacobi
     xg, wg = np.polynomial.legendre.leggauss(n)
-    xg = 0.5 * (xg + 1.0)
-    wg = 0.5 * wg
-    U, Vv = np.meshgrid(xg, xg, indexing="ij")
-    WU, WV = np.meshgrid(wg, wg, indexing="ij")
-    a = U.ravel()
-    b = (Vv * (1.0 - U)).ravel()
-    w = (WU * WV * (1.0 - U)).ravel()
+    xg = 0.5 * (xg + 1.0); wg = 0.5 * wg
+    if jacobi:
+        xj, wj = roots_jacobi(n, 1.0, 0.0)          # weight (1-x) on [-1,1]
+        u = 0.5 * (xj + 1.0); wu = 0.25 * wj            # int_0^1 f(u)(1-u) du
+        U, Vv = np.meshgrid(u, xg, indexing="ij"); WU, WV = np.meshgrid(wu, wg, indexing="ij")
+        w = (WU * WV).ravel()
+    else:
+        U, Vv = np.meshgrid(xg, xg, indexing="ij"); WU, WV = np.meshgrid(wg, wg, indexing="ij")
+        w = (WU * WV * (1.0 - U)).ravel()
+    a = U.ravel(); b = (Vv * (1.0 - U)).ravel()
     return a, b, w
 
 
@@ -191,8 +200,7 @@ def klein_triangle_area(v0, v1, v2, n=24):
     y0, y1, y2 = to_klein(v0), to_klein(v1), to_klein(v2)
     a, b, w = duffy_rule(n)
     pts = y0[None, :] + a[:, None] * (y1 - y0)[None, :] + b[:, None] * (y2 - y0)[None, :]
-    e1, e2 = y1 - y0, y2 - y0
-    jac = abs(e1[0]*e2[1] - e1[1]*e2[0])
+    jac = abs(np.cross(y1 - y0, y2 - y0))
     return float(np.sum(w * klein_area_weight(pts)) * jac)
 
 

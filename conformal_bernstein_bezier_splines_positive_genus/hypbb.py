@@ -140,13 +140,17 @@ def constant_coeffs(V, d):
 # ---------------------------------------------------------------- local matrices
 
 
-def quad_points(V, n):
-    """Klein-model quadrature on the geodesic triangle: points on H^2 and weights."""
-    Y = to_klein(V.T)
-    a, b, w = duffy_rule(n)
+def quad_points(V, n, jacobi=False):
+    """Klein-model quadrature on the geodesic triangle: points on H^2 and
+    weights. The collapsed vertex of the rule is placed at the corner farthest
+    from the origin (largest x_0), where the area density is steepest."""
+    Vp = np.array(V.T)                                  # rows = vertices
+    far = int(np.argmax(Vp[:, 0]))
+    order = [(far + 2) % 3, far, (far + 1) % 3]         # collapsed vertex -> local index 1
+    Y = to_klein(Vp[order])
+    a, b, w = duffy_rule(n, jacobi=jacobi)
     y = Y[0][None, :] + a[:, None] * (Y[1] - Y[0])[None, :] + b[:, None] * (Y[2] - Y[0])[None, :]
-    e1, e2 = Y[1] - Y[0], Y[2] - Y[0]
-    jac = abs(e1[0]*e2[1] - e1[1]*e2[0])
+    jac = abs(np.cross(Y[1] - Y[0], Y[2] - Y[0]))
     return from_klein(y), w * klein_area_weight(y) * jac
 
 

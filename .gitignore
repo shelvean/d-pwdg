@@ -11,7 +11,7 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 
-# LaTeX build artifacts (paper/)
+# LaTeX build artifacts (any paper/ directory)
 *.aux
 *.bbl
 *.blg

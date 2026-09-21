@@ -2,7 +2,7 @@
 
 Author: Shelvean Kapita
 
-This repository holds only what the submitted manuscript needs.  Each entry
+This subproject holds only what the submitted manuscript needs.  Each entry
 below produces a numbered table or figure; nothing here is a development or
 diagnostic script.
 

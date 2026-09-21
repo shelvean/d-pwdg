@@ -2,7 +2,7 @@
 
 **Shelvean Kapita**
 
-This repository holds only what the submitted manuscript needs. Every source
+This subproject holds only what the submitted manuscript needs. Every source
 file here produces a numbered table or figure, or is imported by something that
 does — there are no development or diagnostic scripts. This file maps each
 numbered item of `paper/Kapita_Direction_Adaptive_PWDG_Helmholtz.pdf` onto the
@@ -114,7 +114,7 @@ finite-difference step.
 
 ## Verification runs
 
-Everything below was produced by running the code in this repository, on
+Everything below was produced by running the code in this subproject, on
 Python 3.11.15 with NumPy 2.4.6, SciPy 1.17.1, pandas 3.0.5 — deliberately
 *not* the environment in `ENVIRONMENT_TESTED.txt` (Python 3.13.5, NumPy 2.3.5,
 SciPy 1.17.0), so agreement is across versions rather than within one.

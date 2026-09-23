@@ -10,6 +10,7 @@ The cell maps need supply only their intrinsic reference-coordinate metric.
 The sparse assembly does not ask for an ambient embedding.
 """
 from __future__ import annotations
+import os
 
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -108,6 +109,18 @@ def reference_entity_dofs(r,k,q=None):
     E=np.array(rows)
     if E.shape!=(V.nloc,V.nloc):
         raise RuntimeError(f'wrong count in moment DOFs {(r,k)}: {E.shape}')
+    if os.environ.get('RIEMANNFEM_EQUILIBRATE','0')=='1':
+        # two-sided equilibration: E = diag(1/R) Et diag(1/C), so E^{-1} = diag(C) Et^{-1} diag(R).
+        # The space is unchanged; only the conditioning of the inverse improves.
+        Rs=np.ones(E.shape[0]); Cs=np.ones(E.shape[1]); Et=E.copy()
+        for _ in range(20):
+            rn=np.sqrt((Et**2).sum(1)); Et/=rn[:,None]; Rs/=rn
+            cn=np.sqrt((Et**2).sum(0)); Et/=cn[None,:]; Cs/=cn
+        singular=la.svdvals(Et)
+        if singular[-1] <= 1e-12*singular[0]:
+            raise RuntimeError(f'unisolvence failure {(r,k)}, equilibrated condition {singular[0]/singular[-1]:.3g}')
+        E_inv=(Cs[:,None]*la.solve(Et,np.eye(V.nloc)))*Rs[None,:]
+        return E,E_inv,tuple(entries),float(singular[0]/singular[-1])
     singular=la.svdvals(E)
     if singular[-1] <= 1e-12*singular[0]:
         raise RuntimeError(f'unisolvence failure {(r,k)}, condition {singular[0]/singular[-1]:.3g}')

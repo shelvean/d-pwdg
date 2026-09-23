@@ -63,4 +63,29 @@ Times are for one core of a 2024 laptop-class machine.
 | Residual and exact-form component | `python sw_orth.py` | below 1e-9 and 6e-11 | 1 min |
 | Chart constants table | `python mesh_constants.py` | S^3/Gamma anisotropy 4.00 | 2 min |
 
+## Seifert-Weber coexact spectrum: Bernstein-Whitney complex
+These scripts compute the coexact one-form spectrum of the Seifert-Weber space
+with a Bernstein-Whitney complex and check it against the length spectrum and
+the trace formula.  Drivers write eigenvalues to `run/` and figures to `figures/`.
+
+| File | Contents |
+|---|---|
+| `bw_complex.py` | geometric-decomposition basis, canonical vertex orders per subsimplex class, closed-form differentials, mass assembly |
+| `aad.py` | sum-factorized Bernstein moments (Ainsworth-Andriamaro-Davydov), batched hyperboloid metric |
+| `bw_sc_lean.py` | memory-lean driver: cell-wise stiffness, static condensation, shift-invert; `python bw_sc_lean.py p [level] [nev] [sigma]` |
+| `bw_sc.py` | static-condensation driver with global matrices (p <= 9 in 4 GB) |
+| `bw_sw.py` | plain shift-invert driver for small p |
+| `bw_tests.py` | closed-form d against direct Bernstein differentiation; relative errors at roundoff for r = 2, 4, 6 |
+| `sw_spectrum2.py` | length spectrum from the face pairings (hash-only ball, trace filter) |
+| `sw_spectrum.py` | earlier version of the same |
+| `traceformula.py` | Python port of the Lin-Lipnowski trace formula and Booker's method |
+| `make_figures.py` | data figures: degree convergence, trace-formula check, threshold in N; the trace-formula panel reads `run/booker_curves.pkl`, which no script here produces |
+| `fastmass.py`, `sw_fast.py`, `sw_chunks_eq.py`, `cond_audit.py`, `sw5_assemble.py`, `sw5_lobpcg.py`, `sw5_lu.py` | earlier moment-DOF experiments and diagnostics |
+
+The moment-DOF experiments set `RIEMANNFEM_EQUILIBRATE=1`, which switches on a
+two-sided equilibration of the reference moment matrix in
+`riemannfem/entity_assembly.py`.  The finite element space is unchanged; only
+the conditioning of the inverse improves.  Without the variable the library
+behaves exactly as before.
+
 The convergence plot of the scalar torus problem is drawn in the manuscript from the numbers of the scalar table.
